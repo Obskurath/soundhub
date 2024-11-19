@@ -5,17 +5,16 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("exit")
         .setDescription("Exits the voice channel."),
-    execute: async ({client, interaction}) => {
-        const queue = client.player.getQueue(interaction.guild);
+    execute: async ({ client, interaction }) => {
+        const queue = client.player.getQueue(interaction.guild.id);
 
-        if(!queue) {
+        if (!queue) {
             await interaction.reply("There is no song playing");
             return;
         }
 
-       queue.destroy();
+        queue.destroy();
 
-       await interaction.reply("Why you bully me? :c")
-
+        await interaction.reply("Why you bully me? :c");
     }
-}
+};
