@@ -32,7 +32,7 @@ for (const file of commandsFiles) {
     commands.push(command.data.toJSON());
 }
 
-// PLAYER 
+// Create NEW PLAYER  
 
 client.player = new Player(client, {
     
@@ -42,7 +42,7 @@ client.player = new Player(client, {
     }
 });
 
-// Register the YouTube extractor
+// Register the YouTube extractor (Youtubei)
 client.player.extractors.register(YoutubeiExtractor, {})
 
 client.on("ready", () => {
