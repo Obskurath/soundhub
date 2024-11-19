@@ -12,6 +12,7 @@
   "author": "Obskurath",
   "license": "ISC",
   "dependencies": {
+    "@discord-player/extractor": "^4.5.1",
     "@discordjs/builders": "^1.9.0",
     "@discordjs/opus": "^0.9.0",
     "@discordjs/rest": "^2.4.0",
