@@ -31,15 +31,25 @@
 
 ## 🚀 Setup
 
-### Prerequisites
 
-- Node.js 18+
+## ⚡ Requirements
+
+### Important Version Notice ⚠️
+- Node.js v18.x.x (Required)
+  - The bot is NOT compatible with Node.js v20+
+  - Recommended version: Node.js 18.19.1 LTS
 - Discord Bot Token
 - Discord Server
 
 ### Installation
 
 ```bash
+# Check your Node.js version first
+node --version # Should show v18.x.x
+
+# If needed, install Node.js v18 from:
+# https://nodejs.org/download/release/v18.19.1/
+
 git clone https://github.com/Obskurath/soundhub.git
 cd soundhub
 npm install
