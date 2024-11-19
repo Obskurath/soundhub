@@ -40,7 +40,7 @@
 ### Installation
 
 ```bash
-git clone https://github.com/yourusername/soundhub.git
+git clone https://github.com/Obskurath/soundhub.git
 cd soundhub
 npm install
 ```
