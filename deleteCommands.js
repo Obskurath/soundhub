@@ -15,7 +15,7 @@ const rest = new REST({ version: "9" }).setToken(process.env.DISCORD_TOKEN);
         );
 
         // Delete all guild-specific commands
-        const guild_ids = ["1304884326285971539"]; // Add your guild IDs here
+        const guild_ids = process.env.GUILD_ID; // Add your guild IDs here
         for (const guildId of guild_ids) {
             await rest.put(
                 Routes.applicationGuildCommands(process.env.CLIENT_ID, guildId),
