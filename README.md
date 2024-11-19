@@ -50,6 +50,12 @@ node --version # Should show v18.x.x
 # If needed, install Node.js v18 from:
 # https://nodejs.org/download/release/v18.19.1/
 
+# Alternatively, use nvm (Node Version Manager) to install Node.js v18:
+nvm install 18
+nvm use 18
+```
+
+```bash
 git clone https://github.com/Obskurath/soundhub.git
 cd soundhub
 npm install
