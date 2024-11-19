@@ -158,7 +158,12 @@ module.exports = {
                     .setDescription(`🔍 Added **[${song.title}](${song.url})** to the queue.`)
                     .setThumbnail(song.thumbnail || null)
                     .setFooter({ text: `Duration: ${song.duration || "Unknown"}` });
-            }
+
+                    await interaction.reply({
+                        embeds: [embed],
+                        ephemeral: true
+                    });
+                }
 
             // Play the queue if not already playing
             if (!queue.playing) {
