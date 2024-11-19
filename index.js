@@ -54,6 +54,7 @@ client.on("ready", () => {
             .then(() => console.log(`Added commands to ${guildId}`))
             .catch(console.error);
     }
+    console.log(`Logged in as ${client.user.tag}!`);
 });
 
 client.on("interactionCreate", async interaction => {
