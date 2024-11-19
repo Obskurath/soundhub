@@ -77,7 +77,10 @@ module.exports = {
                 console.log("Playback started");
             }
 
-            await interaction.editReply({ embeds: [embed] });
+            await interaction.editReply({ 
+                embeds: [embed],
+                ephemeral:true
+             });
 
         } catch (error) {
             console.error("Error processing search:", error);
