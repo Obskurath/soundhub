@@ -80,6 +80,9 @@ module.exports = {
                     searchEngine: QueryType.YOUTUBE_VIDEO,
                 });
 
+                // Add logging to inspect the result
+                console.log("Search result data:", result._data);
+
                 if (!result || result.tracks.length === 0) {
                     return interaction.reply("No results found for the provided URL.");
                 }
@@ -113,11 +116,17 @@ module.exports = {
                     .setThumbnail(playlist.thumbnail || null);
             } else if (subcommand === "search") {
                 const searchterms = interaction.options.getString("searchterms");
-                console.log(`Searching for song: ${searchterms}`);
-                const result = await client.player.search(searchterms, {
+
+                // Specific search terms, try using something well-known
+                const refinedSearch = searchterms || "Never Gonna Give You Up Rick Astley"; // Example refined search
+                console.log(`Searching for song: ${refinedSearch}`);
+                const result = await client.player.search(refinedSearch, {
                     requestedBy: interaction.user,
                     searchEngine: QueryType.AUTO,
                 });
+
+                // Add logging to inspect the result
+                console.log("Search result data:", result._data);
 
                 if (!result || result.tracks.length === 0) {
                     return interaction.reply("No results found for your search terms.");
