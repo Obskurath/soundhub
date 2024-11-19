@@ -40,13 +40,10 @@ client.player = new Player(client, {
         quality: "highestaudio",
         highWaterMark: 1 << 25
     }
-}
-
-);
+});
 
 // Register the YouTube extractor
-const player = new Player()
-player.extractors.register(YoutubeiExtractor, {})
+client.player.extractors.register(YoutubeiExtractor, {})
 
 client.on("ready", () => {
     const guild_ids = client.guilds.cache.map(guild => guild.id);
