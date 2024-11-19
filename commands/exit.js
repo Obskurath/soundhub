@@ -1,5 +1,4 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -9,13 +8,19 @@ module.exports = {
         const queue = client.player.queues.get(interaction.guild.id);
 
         if (!queue) {
-            await interaction.reply("There is no song playing");
+            await interaction.reply({
+                content: "The bot is not connected to the voice channel.",
+                ephemeral: true,
+            });
             return;
         }
 
-        //Disconnects from the voice chat
+        // Disconnects from the voice chat
         queue.connection.disconnect();
 
-        await interaction.reply("Why you bully me? :c");
-    }
+        await interaction.reply({
+            content: "Why you bully me? :c",
+            ephemeral: true,
+        });
+    },
 };
