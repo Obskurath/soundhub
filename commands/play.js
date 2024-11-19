@@ -100,6 +100,8 @@ module.exports = {
                 console.log(`Adding song: ${song.title} to queue`);
                 await queue.addTrack(song);
 
+                console.log(`Queue after adding song: ${queue.tracks.map(track => track.title).join(", ")}`);
+
                 embed
                     .setDescription(`🎵 Added **[${song.title}](${song.url})** to the queue.`)
                     .setThumbnail(song.thumbnail || null)
@@ -123,6 +125,8 @@ module.exports = {
                 const playlist = result.playlist;
                 console.log(`Adding playlist: ${playlist.title} to queue`);
                 await queue.addTracks(result.tracks);
+
+                console.log(`Queue after adding playlist: ${queue.tracks.map(track => track.title).join(", ")}`);
 
                 embed
                     .setDescription(`🎶 Added **[${playlist.title}](${playlist.url})** (${result.tracks.length} tracks) to the queue.`)
@@ -149,6 +153,8 @@ module.exports = {
                 console.log(`Adding song: ${song.title} to queue`);
                 await queue.addTrack(song);
 
+                console.log(`Queue after adding song: ${queue.tracks.map(track => track.title).join(", ")}`);
+
                 embed
                     .setDescription(`🔍 Added **[${song.title}](${song.url})** to the queue.`)
                     .setThumbnail(song.thumbnail || null)
@@ -156,7 +162,9 @@ module.exports = {
             }
 
             if (!queue.isPlaying()) {
+                console.log("Starting playback");
                 await queue.node.play();
+                console.log("Playback started");
             }
 
             await interaction.editReply({ embeds: [embed] });
