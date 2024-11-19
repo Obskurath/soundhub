@@ -6,16 +6,23 @@ module.exports = {
         .setName("resume")
         .setDescription("Resumes the current song."),
     execute: async ({client, interaction}) => {
-        const queue = client.player.getQueue(interaction.guild);
+        const queue = client.player.queues.get(interaction.guild);
 
         if(!queue) {
-            await interaction.reply("There is no song playing");
+            await interaction.reply({
+                content: "There is no song playing",
+                ephemeral: true
+            });
+
             return;
         }
 
        queue.setPaused(false);
 
-       await interaction.reply("Resumed playing");
+       await interaction.reply({
+        content: "Resumed playing",
+        ephemeral: true
+    });
 
     }
 }
