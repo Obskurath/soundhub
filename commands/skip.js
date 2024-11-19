@@ -9,6 +9,7 @@ module.exports = {
         const queue = client.player.queues.get(interaction.guild.id);
 
         if (!queue || !queue.current) {
+            console.log("No queue or no song currently playing.");
             await interaction.reply({
                 content: "There is no song currently playing.",
                 ephemeral: true,
@@ -17,15 +18,24 @@ module.exports = {
         }
 
         const currentSong = queue.current;
-        await queue.node.skip(); // Cambiado a `queue.node.skip` según la nueva API de discord-player
+        console.log("Skipping song:", currentSong.title);
 
-        await interaction.reply({
-            embeds: [
-            new EmbedBuilder()
-                .setDescription(`Skipped **${currentSong.title}**`)
-                .setThumbnail(currentSong.thumbnail)
-            ],
-            ephemeral: true,
-        });
+        try {
+            await queue.node.skip();
+            await interaction.reply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(`⏭️ Skipped **${currentSong.title}**`)
+                        .setThumbnail(currentSong.thumbnail || ''),
+                ],
+                ephemeral: true,
+            });
+        } catch (error) {
+            console.error("Error skipping song:", error);
+            await interaction.reply({
+                content: "❌ An error occurred while trying to skip the song.",
+                ephemeral: true,
+            });
+        }
     },
 };
