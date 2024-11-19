@@ -1,0 +1,24 @@
+{
+  "name": "soundhub",
+  "version": "1.0.0",
+  "description": "Music Bot for Discord",
+  "main": "index.js",
+  "engines": {
+    "node": "18.19.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Obskurath",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/builders": "^1.9.0",
+    "@discordjs/opus": "^0.9.0",
+    "@discordjs/rest": "^2.4.0",
+    "@discordjs/voice": "^0.18.0",
+    "discord-api-types": "^0.37.105",
+    "discord-player": "^6.7.1",
+    "discord.js": "^14.16.3",
+    "dotenv": "^16.4.5"
+  }
+}
