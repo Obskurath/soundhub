@@ -69,7 +69,7 @@ client.on("interactionCreate", async interaction => {
     catch(err)
     {
         console.error(err);
-        await interaction.reply("An error occured while executing that command")
+        await interaction.reply("❌ An error occured while executing that command")
     }
     
 });
