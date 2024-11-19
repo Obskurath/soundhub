@@ -43,19 +43,22 @@
 git clone https://github.com/yourusername/soundhub.git
 cd soundhub
 npm install
+```
 
-Configuration
+### Configuration
 Create a .env file:
-
-dotenv
-Copiar código
+```bash
 DISCORD_TOKEN=your_bot_token
 CLIENT_ID=your_client_id
 GUILD_ID=your_server_id
-Start
-bash
-Copiar código
+```
+
+### Start
+```bash
 node index.js
+```
+
+
 🛠️ Tech Stack
 discord.js v14
 discord-player v6
@@ -73,4 +76,4 @@ MIT License - see LICENSE file
 💬 Support
 Join our Discord or open an issue
 
-<div align="center"> Made with ❤️ by <a href="https://github.com/Obskurath">Obskurath</a> </div> ```
+<div align="center"> Made with ❤️ by <a href="https://github.com/Obskurath">Obskurath</a> </div> ``
