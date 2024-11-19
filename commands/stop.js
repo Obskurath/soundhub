@@ -34,7 +34,7 @@ module.exports = {
         }
 
         const embed = new EmbedBuilder()
-            .setDescription(`⏹ Stopped playing **[${currentTrack.title}](${currentTrack.url})** and cleared the queue\n\nLeaving in 30 seconds...`)
+            .setDescription(`⏹ Stopped playing **[${currentTrack.title}](${currentTrack.url})** and cleared the queue`)
             .setThumbnail(currentTrack.thumbnail)
             .setColor('#FF0000');
 
