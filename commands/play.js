@@ -76,7 +76,7 @@ module.exports = {
                 .setThumbnail(song.thumbnail)
                 .setFooter({ text: `Duration: ${song.duration || "Unknown"}` });
 
-            // Iniciar la reproducción si no está en curso
+            // Start playback if not already playing
             if (!queue.isPlaying()) {
                 console.log("Starting playback");
                 await queue.node.play();
