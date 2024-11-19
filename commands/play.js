@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { EmbedBuilder, PermissionsBitField } = require("discord.js");
-const { QueryType, AsyncQueue } = require("discord-player");
+const { QueryType } = require("discord-player");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -32,26 +32,22 @@ module.exports = {
             });
         }
 
-        let queue = new AsyncQueue();
-        try {
+        // Obtener la cola de la guild, crearla si no existe
+        let queue = client.player.queues.get(interaction.guild.id);
+        if (!queue) {
             queue = await client.player.queues.create(interaction.guild);
+        }
 
+        try {
+            // Conectar al canal de voz si no estamos conectados
             if (!queue.connection) {
                 console.log(`Connecting to voice channel: ${voiceChannel.name}`);
                 await queue.connect(voiceChannel);
             }
-        } catch (error) {
-            console.error("Error creating or connecting to the queue:", error);
-            return interaction.editReply({
-                content: "Failed to join the voice channel. Please check my permissions.",
-                ephemeral: true
-            });
-        }
 
-        const searchTerm = interaction.options.getString("search");
-        let embed = new EmbedBuilder();
+            const searchTerm = interaction.options.getString("search");
+            let embed = new EmbedBuilder();
 
-        try {
             console.log(`Searching for: ${searchTerm}`);
             const result = await client.player.search(searchTerm, {
                 requestedBy: interaction.user,
@@ -74,6 +70,7 @@ module.exports = {
                 .setThumbnail(song.thumbnail || null)
                 .setFooter({ text: `Duration: ${song.duration || "Unknown"}` });
 
+            // Iniciar la reproducción si no está en curso
             if (!queue.isPlaying()) {
                 console.log("Starting playback");
                 await queue.node.play();
