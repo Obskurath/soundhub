@@ -6,14 +6,15 @@ module.exports = {
         .setName("exit")
         .setDescription("Exits the voice channel."),
     execute: async ({ client, interaction }) => {
-        const queue = client.player.getQueue(interaction.guild.id);
+        const queue = client.player.queues.get(interaction.guild.id);
 
         if (!queue) {
             await interaction.reply("There is no song playing");
             return;
         }
 
-        queue.destroy();
+        //Disconnects from the voice chat
+        queue.connection.disconnect();
 
         await interaction.reply("Why you bully me? :c");
     }
