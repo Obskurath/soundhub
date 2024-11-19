@@ -58,11 +58,13 @@ GUILD_ID=your_server_id
 node index.js
 ```
 
+
 ## 🛠️ Tech Stack
 - discord.js v14
 - discord-player v6
 - Node.js v18+
 - YouTube API
+
 
 ## 🤝 Contributing
 1. Fork repository
@@ -71,8 +73,10 @@ node index.js
 4. Push branch (git push origin feature/amazing-feature)
 5. Open Pull Request
 
+
 ## 📝 License
 MIT License - see LICENSE file`
+
 
 ## 💬 Support
 Open an issue
