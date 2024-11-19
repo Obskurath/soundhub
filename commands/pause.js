@@ -6,16 +6,23 @@ module.exports = {
         .setName("pause")
         .setDescription("Pauses the current song."),
     execute: async ({client, interaction}) => {
-        const queue = client.player.getQueue(interaction.guild);
+        const queue = client.player.queues.get(interaction.guild);
 
         if(!queue) {
-            await interaction.reply("There is no song playing");
+            await interaction.reply({
+                content:"There is no song playing",
+                ephemeral: true
+            });
             return;
         }
 
        queue.setPaused(true);
 
-       await interaction.reply("The current song has been paused")
+       await interaction.reply({
+            content:"The current song has been paused",
+            ephemeral: true
+        }
+       )
 
     }
 }
