@@ -40,20 +40,20 @@ module.exports = {
                 )
         ),
     execute: async ({ client, interaction }) => {
+        await interaction.deferReply();
+
         const voiceChannel = interaction.member.voice.channel;
 
-        // Check if the user is in a voice channel
         if (!voiceChannel) {
-            return interaction.reply({
+            return interaction.editReply({
                 content: "You need to be in a voice channel to play music!",
                 ephemeral: true
             });
         }
 
-        // Check if the bot has permissions to join and speak in the voice channel
         const permissions = voiceChannel.permissionsFor(interaction.client.user);
         if (!permissions.has(PermissionsBitField.Flags.Connect) || !permissions.has(PermissionsBitField.Flags.Speak)) {
-            return interaction.reply({
+            return interaction.editReply({
                 content: "I need permission to join and speak in your voice channel!",
                 ephemeral: true
             });
@@ -61,20 +61,18 @@ module.exports = {
 
         let queue;
         try {
-            // Create or get the queue
             queue = await client.player.queues.create(interaction.guild);
 
-            // Connect to the voice channel
             if (!queue.connection) {
                 console.log(`Connecting to voice channel: ${voiceChannel.name}`);
                 await queue.connect(voiceChannel);
             }
         } catch (error) {
             console.error("Error creating or connecting to the queue:", error);
-            return interaction.reply({
+            return interaction.editReply({
                 content: "Failed to join the voice channel. Please check my permissions.",
                 ephemeral: true
-            } );
+            });
         }
 
         const subcommand = interaction.options.getSubcommand();
@@ -89,11 +87,10 @@ module.exports = {
                     searchEngine: QueryType.YOUTUBE_VIDEO,
                 });
 
-                // Add logging to inspect the result
                 console.log("Search result data:", result._data);
 
                 if (!result || result.tracks.length === 0) {
-                    return interaction.reply({
+                    return interaction.editReply({
                         content: "No results found for the provided URL.",
                         ephemeral: true
                     });
@@ -107,6 +104,7 @@ module.exports = {
                     .setDescription(`🎵 Added **[${song.title}](${song.url})** to the queue.`)
                     .setThumbnail(song.thumbnail || null)
                     .setFooter({ text: `Duration: ${song.duration || "Unknown"}` });
+
             } else if (subcommand === "playlist") {
                 const url = interaction.options.getString("url");
                 console.log(`Searching for playlist: ${url}`);
@@ -116,7 +114,7 @@ module.exports = {
                 });
 
                 if (!result || result.tracks.length === 0) {
-                    return interaction.reply({
+                    return interaction.editReply({
                         content: "No playlist found for the provided URL.",
                         ephemeral: true
                     });
@@ -129,22 +127,19 @@ module.exports = {
                 embed
                     .setDescription(`🎶 Added **[${playlist.title}](${playlist.url})** (${result.tracks.length} tracks) to the queue.`)
                     .setThumbnail(playlist.thumbnail || null);
+
             } else if (subcommand === "search") {
                 const searchterms = interaction.options.getString("searchterms");
-
-                // Specific search terms, try using something well-known
-                const refinedSearch = searchterms || "Never Gonna Give You Up Rick Astley"; // Example refined search
-                console.log(`Searching for song: ${refinedSearch}`);
-                const result = await client.player.search(refinedSearch, {
+                console.log(`Searching for song: ${searchterms}`);
+                const result = await client.player.search(searchterms, {
                     requestedBy: interaction.user,
                     searchEngine: QueryType.AUTO,
                 });
 
-                // Add logging to inspect the result
                 console.log("Search result data:", result._data);
 
                 if (!result || result.tracks.length === 0) {
-                    return interaction.reply({
+                    return interaction.editReply({
                         content: "No results found for your search terms.",
                         ephemeral: true
                     });
@@ -158,25 +153,17 @@ module.exports = {
                     .setDescription(`🔍 Added **[${song.title}](${song.url})** to the queue.`)
                     .setThumbnail(song.thumbnail || null)
                     .setFooter({ text: `Duration: ${song.duration || "Unknown"}` });
-
-                    await interaction.reply({
-                        embeds: [embed],
-                        ephemeral: true
-                    });
-                }
-
-            // Play the queue if not already playing
-            if (!queue.playing) {
-                console.log("Playing music");
-                await queue.play();
             }
 
-            // Send the embed to the user
-            await interaction.reply({ embeds: [embed] });
+            if (!queue.isPlaying()) {
+                await queue.node.play();
+            }
+
+            await interaction.editReply({ embeds: [embed] });
 
         } catch (error) {
             console.error("Error processing subcommand:", error);
-            await interaction.reply({
+            await interaction.editReply({
                 content: "An error occurred while processing your request. Please try again.",
                 ephemeral: true
             });
