@@ -4,6 +4,7 @@ const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
 const { Client, GatewayIntentBits, Collection, Guild, Message, VoiceState } = require("discord.js");
 const { Player } = require("discord-player");
+const { YouTubeExtractor } = require("@discord-player/extractor");
 
 const fs = require("node:fs");
 const path = require("node:path");
@@ -39,6 +40,8 @@ client.player = new Player(client, {
         highWaterMark: 1 << 25
     }
 });
+
+client.player.extractors.register(YouTubeExtractor);
 
 client.on("ready", () => {
     const guild_ids = client.guilds.cache.map(guild => guild.id);
