@@ -28,7 +28,7 @@ for (const file of commandsFiles){
     const command = require(filePath);
 
     client.commands.set(command.data.name, command);
-    commands.push(command);
+    commands.push(command.data.toJSON());
 }
 
 // PLAYER 
@@ -74,4 +74,4 @@ client.on("interactionCreate", async interaction => {
     
 });
 
-client.login(procces.env.DISCORD_TOKEN)
+client.login(process.env.DISCORD_TOKEN)
