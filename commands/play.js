@@ -32,7 +32,7 @@ module.exports = {
             });
         }
 
-        // Obtener la cola de la guild, crearla si no existe
+        // Get the guild queue, create it if it doesn't exist
         let queue = client.player.queues.get(interaction.guild.id);
         if (!queue) {
             queue = await client.player.queues.create(interaction.guild);
@@ -65,9 +65,15 @@ module.exports = {
             console.log(`Adding song: ${song.title} to queue`);
             await queue.addTrack(song);
 
-            embed
-                .setDescription(`🎵 Added **[${song.title}](${song.url})** to the queue.`)
-                .setThumbnail(song.thumbnail || null)
+            // Inside the try block, before setting up the embed
+            let embedDescription = queue.isPlaying() 
+                ? `🎵 Added **[${song.title}](${song.url})** to the queue.`
+                : `🎵 Playing now **[${song.title}](${song.url})**`;
+
+            embed = new EmbedBuilder()
+                .setDescription(embedDescription)
+                .setColor('#0099ff')
+                .setThumbnail(song.thumbnail)
                 .setFooter({ text: `Duration: ${song.duration || "Unknown"}` });
 
             // Iniciar la reproducción si no está en curso
@@ -79,8 +85,8 @@ module.exports = {
 
             await interaction.editReply({ 
                 embeds: [embed],
-                ephemeral:true
-             });
+                ephemeral: true 
+            });
 
         } catch (error) {
             console.error("Error processing search:", error);
