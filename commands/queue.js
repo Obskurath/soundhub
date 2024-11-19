@@ -8,33 +8,32 @@ module.exports = {
     execute: async ({ client, interaction }) => {
         const queue = client.player.queues.get(interaction.guild.id);
 
-        if (!queue || !queue.playing) {
-            console.log("No queue or no song playing.");
-            await interaction.reply({
-                content: "There is no current playlist.",
-                ephemeral: true,
+        if (!queue || !queue.node.isPlaying()) {
+            return interaction.reply({
+                content: "There is no song currently playing.",
+                ephemeral: true
             });
-            return;
         }
 
-        const queueString = queue.tracks
+        // Get current track
+        const currentTrack = queue.currentTrack;
+        
+        // Get upcoming tracks
+        const tracks = queue.tracks.data;
+
+        const queueString = tracks
             .slice(0, 10)
-            .map((song, i) => {
-                return `${i + 1}) ${song.title}`;
+            .map((track, i) => {
+                return `${i + 1}) [${track.title}](${track.url})`;
             })
             .join("\n");
 
-        const currentSong = queue.current;
+        const embed = new EmbedBuilder()
+            .setDescription(`**Currently Playing:**\n🎵 [${currentTrack.title}](${currentTrack.url})\n\n**Queue:**\n${queueString || "No songs in queue"}`)
+            .setThumbnail(currentTrack.thumbnail);
 
-        console.log("Current song:", currentSong);
-        console.log("Queue tracks:", queue.tracks);
-
-        await interaction.reply({
-            embeds: [
-                new EmbedBuilder()
-                    .setDescription(`Currently playing: ${currentSong.title}\n\nQueue:\n${queueString}`)
-                    .setThumbnail(currentSong.thumbnail),
-            ],
+        return interaction.reply({
+            embeds: [embed]
         });
     },
 };
