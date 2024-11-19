@@ -6,10 +6,13 @@ module.exports = {
         .setName("queue")
         .setDescription("Shows the first 10 songs in the queue."),
     execute: async ({client, interaction}) => {
-        const queue = client.player.getQueue(interaction.guild);
+        const queue = client.player.queues.get(interaction.guild);
 
         if(!queue || !queue.playing) {
-            await interaction.reply("There is no song playing")
+            await interaction.reply({
+                content: "There is no current playlist",
+                ephemeral: true
+            })
             return;
         }
 
