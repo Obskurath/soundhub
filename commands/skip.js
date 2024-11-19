@@ -23,9 +23,13 @@ module.exports = {
         const embed = new EmbedBuilder()
             .setDescription(`⏭ Skipped **[${currentSong.title}](${currentSong.url})**`)
             .setThumbnail(currentSong.thumbnail);
+            
+           
+        
 
         await interaction.reply({
-            embeds: [embed]
+            embeds: [embed],
+            ephemeral:true
         });
     },
 };
