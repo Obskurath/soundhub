@@ -44,13 +44,19 @@ module.exports = {
 
         // Check if the user is in a voice channel
         if (!voiceChannel) {
-            return interaction.reply("You need to be in a voice channel to play music!");
+            return interaction.reply({
+                content: "You need to be in a voice channel to play music!",
+                ephemeral: true
+            });
         }
 
         // Check if the bot has permissions to join and speak in the voice channel
         const permissions = voiceChannel.permissionsFor(interaction.client.user);
         if (!permissions.has(PermissionsBitField.Flags.Connect) || !permissions.has(PermissionsBitField.Flags.Speak)) {
-            return interaction.reply("I need permission to join and speak in your voice channel!");
+            return interaction.reply({
+                content: "I need permission to join and speak in your voice channel!",
+                ephemeral: true
+            });
         }
 
         let queue;
@@ -65,7 +71,10 @@ module.exports = {
             }
         } catch (error) {
             console.error("Error creating or connecting to the queue:", error);
-            return interaction.reply("Failed to join the voice channel. Please check my permissions.");
+            return interaction.reply({
+                content: "Failed to join the voice channel. Please check my permissions.",
+                ephemeral: true
+            } );
         }
 
         const subcommand = interaction.options.getSubcommand();
@@ -84,7 +93,10 @@ module.exports = {
                 console.log("Search result data:", result._data);
 
                 if (!result || result.tracks.length === 0) {
-                    return interaction.reply("No results found for the provided URL.");
+                    return interaction.reply({
+                        content: "No results found for the provided URL.",
+                        ephemeral: true
+                    });
                 }
 
                 const song = result.tracks[0];
@@ -104,7 +116,10 @@ module.exports = {
                 });
 
                 if (!result || result.tracks.length === 0) {
-                    return interaction.reply("No playlist found for the provided URL.");
+                    return interaction.reply({
+                        content: "No playlist found for the provided URL.",
+                        ephemeral: true
+                    });
                 }
 
                 const playlist = result.playlist;
@@ -129,7 +144,10 @@ module.exports = {
                 console.log("Search result data:", result._data);
 
                 if (!result || result.tracks.length === 0) {
-                    return interaction.reply("No results found for your search terms.");
+                    return interaction.reply({
+                        content: "No results found for your search terms.",
+                        ephemeral: true
+                    });
                 }
 
                 const song = result.tracks[0];
@@ -153,7 +171,10 @@ module.exports = {
 
         } catch (error) {
             console.error("Error processing subcommand:", error);
-            await interaction.reply("An error occurred while processing your request. Please try again.");
+            await interaction.reply({
+                content: "An error occurred while processing your request. Please try again.",
+                ephemeral: true
+            });
         }
     },
 };
