@@ -58,22 +58,21 @@ GUILD_ID=your_server_id
 node index.js
 ```
 
+## 🛠️ Tech Stack
+- discord.js v14
+- discord-player v6
+- Node.js v18+
+- YouTube API
 
-🛠️ Tech Stack
-discord.js v14
-discord-player v6
-Node.js v18+
-YouTube API
-🤝 Contributing
-Fork the repository
-Create a branch (git checkout -b feature/amazing-feature)
-Commit changes (git commit -m 'Add feature')
-Push to your branch (git push origin feature/amazing-feature)
-Open a Pull Request
-📝 License
-MIT License - see LICENSE file
+## 🤝 Contributing
+1. Fork repository
+2. Create branch (git checkout -b feature/amazing-feature)
+3. Commit changes (git commit -m 'Add feature')
+4. Push branch (git push origin feature/amazing-feature)
+5. Open Pull Request
 
-💬 Support
-Join our Discord or open an issue
+## 📝 License
+MIT License - see LICENSE file`
 
-<div align="center"> Made with ❤️ by <a href="https://github.com/Obskurath">Obskurath</a> </div> ``
+## 💬 Support
+Open an issue
