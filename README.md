@@ -64,9 +64,9 @@ npm install
 ### Configuration
 Create a .env file:
 ```bash
-DISCORD_TOKEN=your_bot_token
-CLIENT_ID=your_client_id
-GUILD_ID=your_server_id
+DISCORD_TOKEN = your_bot_token
+CLIENT_ID = your_client_id
+GUILD_ID = your_server_id
 ```
 
 ### Start
