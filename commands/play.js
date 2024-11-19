@@ -6,39 +6,39 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("play")
         .setDescription("Plays a song.")
-        .addSubcommand(subcommand => {
+        .addSubcommand(subcommand => 
             subcommand
                 .setName("search")
                 .setDescription("Searches for a song.")
-                .addStringOption(option => {
+                .addStringOption(option => 
                     option
                         .setName("searchterms")
                         .setDescription("search keywords")
-                        .setRequired(true);
-                })
-        })
-        .addSubcommand(subcommand => {
+                        .setRequired(true)
+                )
+        )
+        .addSubcommand(subcommand => 
             subcommand
                 .setName("playlist")
                 .setDescription("Plays a playlist form YT.")
-                .addStringOption(option => {
+                .addStringOption(option => 
                     option
                         .setName("url")
                         .setDescription("playlist url")
-                        .setRequired(true);
-                })
-        })
-        .addSubcommand(subcommand => {
+                        .setRequired(true)
+                )
+        )
+        .addSubcommand(subcommand => 
             subcommand
                 .setName("song")
                 .setDescription("Searches for a song from YT.")
-                .addStringOption(option => {
+                .addStringOption(option => 
                     option
                         .setName("url")
                         .setDescription("url of the song")
-                        .setRequired(true);
-                })
-        }),
+                        .setRequired(true)
+                )
+        ),
     execute: async ({ client, interaction }) => {
         if (!interaction.member.voice.channel) {
             await interaction.reply("You must be in a voice channel yo use this command ;)")
