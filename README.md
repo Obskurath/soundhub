@@ -1,6 +1,7 @@
 # SoundHub 🎵
+> A powerful Discord music bot built with discord.js and discord-player.
 
-> A powerful & basic Discord music bot built with discord.js and discord-player.
+![SoundHub Preview](./assets/preview.png)
 
 ---
 
@@ -30,7 +31,6 @@
 ---
 
 ## 🚀 Setup
-
 
 ## ⚡ Requirements
 
@@ -62,11 +62,11 @@ npm install
 ```
 
 ### Configuration
-Create a .env file:
+Create a `.env` file:
 ```bash
-DISCORD_TOKEN = your_bot_token
-CLIENT_ID = your_client_id
-GUILD_ID = your_server_id
+DISCORD_TOKEN=your_bot_token
+CLIENT_ID=your_client_id
+GUILD_ID=your_server_id
 ```
 
 ### Start
@@ -74,25 +74,20 @@ GUILD_ID = your_server_id
 node index.js
 ```
 
-
 ## 🛠️ Tech Stack
 - discord.js v14
 - discord-player v6
 - Node.js v18+
 - YouTube API
 
-
 ## 🤝 Contributing
 1. Fork repository
-2. Create branch (git checkout -b feature/amazing-feature)
-3. Commit changes (git commit -m 'Add feature')
-4. Push branch (git push origin feature/amazing-feature)
+2. Create branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add feature'`)
+4. Push branch (`git push origin feature/amazing-feature`)
 5. Open Pull Request
 
-
 ## 📝 License
-MIT License - see LICENSE file`
-
-
+This project is open-source and available under the [MIT License](LICENSE).
 ## 💬 Support
 Open an issue
