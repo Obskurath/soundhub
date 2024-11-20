@@ -26,7 +26,6 @@
 | `/queue`   | View queue         |
 | `/exit`    | Disconnect bot     |
 
----
 
 ## 🚀 Setup
 
