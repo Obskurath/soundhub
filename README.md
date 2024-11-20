@@ -3,7 +3,6 @@
 
 ![SoundHub Preview](./assets/preview.png)
 
----
 
 ## ✨ Features
 
@@ -14,7 +13,6 @@
 - ⚡ **Fast and responsive**
 - 🔐 **Permission handling**
 
----
 
 ## 🎮 Commands
 
@@ -32,9 +30,9 @@
 
 ## 🚀 Setup
 
-## ⚡ Requirements
+### ⚡ Requirements
 
-### Important Version Notice ⚠️
+#### Important Version Notice ⚠️
 - Node.js v18.x.x (Required)
   - The bot is NOT compatible with Node.js v20+
   - Recommended version: Node.js 18.19.0 LTS
