@@ -37,7 +37,7 @@
 ### Important Version Notice ⚠️
 - Node.js v18.x.x (Required)
   - The bot is NOT compatible with Node.js v20+
-  - Recommended version: Node.js 18.19.1 LTS
+  - Recommended version: Node.js 18.19.0 LTS
 - Discord Bot Token
 - Discord Server
 
