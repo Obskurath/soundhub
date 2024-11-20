@@ -1,6 +1,6 @@
 # SoundHub 🎵
 
-> A powerful Discord music bot built with discord.js and discord-player.
+> A powerful & basic Discord music bot built with discord.js and discord-player.
 
 ---
 
