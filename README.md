@@ -29,6 +29,25 @@
 
 ## 🚀 Setup
 
+### Discord Bot Setup
+1. Go to [Discord Developer Portal](https://discord.com/developers/applications)
+2. Click "New Application" and give it a name
+3. Go to the "Bot" tab and click "Add Bot"
+4. Copy the bot token (you'll need this for the `.env` file)
+5. Under "Privileged Gateway Intents", enable:
+   - Server Members Intent
+   - Message Content Intent
+   - Voice State Intent
+6. Go to "OAuth2" → "URL Generator"
+   - Select "bot" and "applications.commands" scopes
+   - Select required permissions:
+     - Send Messages
+     - Connect
+     - Speak
+     - Use Voice Activity
+     - Use Slash Commands
+7. Copy the generated URL and use it to invite the bot to your server
+
 ### ⚡ Requirements
 
 #### Important Version Notice ⚠️
@@ -52,9 +71,13 @@ nvm install 18
 nvm use 18
 ```
 
+### Bot Installation
 ```bash
+# Clone the repository
 git clone https://github.com/Obskurath/soundhub.git
 cd soundhub
+
+# Install dependencies
 npm install
 ```
 
