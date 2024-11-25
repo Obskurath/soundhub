@@ -48,7 +48,7 @@ module.exports = {
 
         try {
             // Search for the song using the provided query (could be a song name or a URL)
-            const response = await player.search({ query, source: "ytsearch" }, interaction.user);
+            const response = await player.search({ query, source: "scsearch" }, interaction.user);
 
             // If no tracks are found, reply with a message stating so
             if (!response || !response.tracks.length) {
