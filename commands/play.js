@@ -1,99 +1,75 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
-const { EmbedBuilder, PermissionsBitField } = require("discord.js");
-const { QueryType } = require("discord-player");
+const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
+    // Create the Slash Command with the name "play" and description
+    // This command will play a song from a query or URL provided by the user
     data: new SlashCommandBuilder()
         .setName("play")
-        .setDescription("Play songs or playlists from YouTube.")
+        .setDescription("Play a song from a query or URL")
         .addStringOption(option =>
-            option
-                .setName("search")
-                .setDescription("Search keywords or URL.")
+            option.setName("query")
+                .setDescription("The Song name or URL to play")
                 .setRequired(true)
         ),
-    execute: async ({ client, interaction }) => {
+
+    // The execute function will be triggered when the user invokes the command
+    async execute({ client, interaction }) {
+        // If the interaction doesn't have a guildId (i.e., not in a server), exit
+        if (!interaction.guildId) return;
+
+        // Defer the reply to give time to process the command
         await interaction.deferReply();
 
-        const voiceChannel = interaction.member.voice.channel;
+        // Get the song query (song name or URL) from the interaction options
+        const query = interaction.options.getString("query");
 
+        // Get the voice channel that the user is currently in
+        const voiceChannel = interaction.member?.voice.channel;
+
+        // If the user is not in a voice channel, reply with an error message
         if (!voiceChannel) {
-            return interaction.editReply({
-                content: "You need to be in a voice channel to play music!",
-                ephemeral: true
-            });
+            return interaction.editReply("You must join a voice channel first before playing a song.");
         }
 
-        const permissions = voiceChannel.permissionsFor(interaction.client.user);
-        if (!permissions.has(PermissionsBitField.Flags.Connect) || !permissions.has(PermissionsBitField.Flags.Speak)) {
-            return interaction.editReply({
-                content: "I need permission to join and speak in your voice channel!",
-                ephemeral: true
-            });
-        }
+        // Get the Lavalink player for the current guild (server)
+        // If no player exists, create a new one with the required properties
+        const player = client.lavalink.getPlayer(interaction.guild.id) || await client.lavalink.createPlayer({
+            guildId: interaction.guild.id,
+            voiceChannelId: voiceChannel.id,
+            textChannelId: interaction.channel.id,
+            selfDeaf: true,  // Bot will be deafened in the voice channel
+            selfMute: false,  // Bot will not be muted
+            volume: 80,       // Default volume is 80
+        });
 
-        // Get the guild queue, create it if it doesn't exist
-        let queue = client.player.queues.get(interaction.guild.id);
-        if (!queue) {
-            queue = await client.player.queues.create(interaction.guild);
-        }
+        // Check if the player is already connected to a voice channel
+        const connected = player.connected;
+        if (!connected) await player.connect(); // Connect the player to the voice channel if not already connected
 
         try {
-            // Conectar al canal de voz si no estamos conectados
-            if (!queue.connection) {
-                console.log(`Connecting to voice channel: ${voiceChannel.name}`);
-                await queue.connect(voiceChannel);
+            // Search for the song using the provided query (could be a song name or a URL)
+            const response = await player.search({ query, source: "ytsearch" }, interaction.user);
+
+            // If no tracks are found, reply with a message stating so
+            if (!response || !response.tracks.length) {
+                return interaction.editReply(`No tracks found for: ${query}`);
             }
 
-            const searchTerm = interaction.options.getString("search");
-            let embed = new EmbedBuilder();
+            // Get the first track from the search results (this is the track that will be played)
+            const track = response.tracks[0];
 
-            console.log(`Searching for: ${searchTerm}`);
-            const result = await client.player.search(searchTerm, {
-                requestedBy: interaction.user,
-                searchEngine: QueryType.AUTO,
-            });
+            // Add the track to the player's queue
+            player.queue.add(track);
 
-            if (!result || result.tracks.length === 0) {
-                return interaction.editReply({
-                    content: "No results found for your search terms.",
-                    ephemeral: true
-                });
+            // If the player is not already playing a song, start playing the track
+            if (!player.playing) {
+                await player.play();
+                return interaction.editReply(`Now playing: ${track.info.title}`);
             }
-
-            const song = result.tracks[0];
-            console.log(`Adding song: ${song.title} to queue`);
-            await queue.addTrack(song);
-
-            // Inside the try block, before setting up the embed
-            let embedDescription = queue.isPlaying() 
-                ? `🎵 Added **[${song.title}](${song.url})** to the queue.`
-                : `🎵 Playing now **[${song.title}](${song.url})**`;
-
-            embed = new EmbedBuilder()
-                .setDescription(embedDescription)
-                .setColor('#0099ff')
-                .setThumbnail(song.thumbnail)
-                .setFooter({ text: `Duration: ${song.duration || "Unknown"}` });
-
-            // Start playback if not already playing
-            if (!queue.isPlaying()) {
-                console.log("Starting playback");
-                await queue.node.play();
-                console.log("Playback started");
-            }
-
-            await interaction.editReply({ 
-                embeds: [embed],
-                ephemeral: true 
-            });
-
         } catch (error) {
-            console.error("Error processing search:", error);
-            await interaction.editReply({
-                content: "An error occurred while processing your request. Please try again.",
-                ephemeral: true
-            });
+            // Log any errors that occur during the process and send an error message to the user
+            console.error(error);
+            return interaction.editReply("There was an error trying to play the song.");
         }
-    },
-};
+    }
+}

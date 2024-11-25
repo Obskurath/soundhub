@@ -6,12 +6,13 @@
 
 ## ✨ Features
 
-- 🎵 **High-quality YouTube playback**
-- 📋 **Queue management system**
-- ⏯️ **Rich playback controls**
-- 🎨 **Beautiful embeds**
-- ⚡ **Fast and responsive**
-- 🔐 **Permission handling**
+- 🎵 High-quality audio playback: Supports high-quality audio streaming from various sources such as YouTube, SoundCloud, Twitch, Spotify, or others.
+- 📋 Queue management system: Allows you to easily manage and organize the playback queue for smooth song transitions.
+- ⏯️ Rich playback controls: Includes comprehensive controls such as play, pause, skip, volume adjustment, and more.
+- 🎨 Beautiful embeds: Displays rich and user-friendly information about the track in a clean and visually appealing way.
+- ⚡ Fast and responsive: Provides quick response times and efficient audio streaming without delays or lag.
+- 🔐 Permission handling: Manages access and permission settings for users, ensuring that only authorized users can control the playback.
+- ☁ Only Lavalink v4.0.0 and above are supported, v3 is not supported.
 
 
 ## 🎮 Commands
@@ -24,8 +25,8 @@
 | `/stop`    | Stop playing       |
 | `/skip`    | Skip track         |
 | `/queue`   | View queue         |
-| `/exit`    | Disconnect bot     |
-
+| `/leave`   | Leave Channel         |
+| `/loop`   | Repeat Song         |
 
 ## 🚀 Setup
 
@@ -96,9 +97,8 @@ node index.js
 
 ## 🛠️ Tech Stack
 - discord.js v14
-- discord-player v6
 - Node.js v18+
-- YouTube API
+- lavalink-client v2.4.1
 
 ## 🤝 Contributing
 1. Fork repository
