@@ -30,6 +30,14 @@
 
 ## 🚀 Setup
 
+### Prerequisites
+1. Node.js (Required)
+   - Compatible with Node.js v18.x.x and above
+   - Tested on Node.js v23.1.0
+2. Java JDK 17+ (for Lavalink server)
+3. Discord Bot Token
+4. Lavalink Server v4.0.0+
+
 ### Discord Bot Setup
 1. Go to [Discord Developer Portal](https://discord.com/developers/applications)
 2. Click "New Application" and give it a name
@@ -49,27 +57,44 @@
      - Use Slash Commands
 7. Copy the generated URL and use it to invite the bot to your server
 
-### ⚡ Requirements
+### Lavalink Server Setup
+1. Download Lavalink v4.0.0 or higher from [GitHub Releases](https://github.com/lavalink-devs/Lavalink/releases)
+2. Setup Lavalink Configuration
+   1. Create a new file named `application.yml` in the same directory as your `Lavalink.jar`
+   2. Copy the configuration below or download from [official example](https://github.com/lavalink-devs/Lavalink/blob/master/LavalinkServer/application.yml.example)
 
-#### Important Version Notice ⚠️
-- Node.js v18.x.x (Required)
-  - The bot is NOT compatible with Node.js v20+
-  - Recommended version: Node.js 18.19.0 LTS
-- Discord Bot Token
-- Discord Server
+```yaml
+# Basic Lavalink configuration
+server:
+  port: 2333
+  address: 127.0.0.1
+lavalink:
+  server:
+    password: "youshallnotpass"  # Important: Change this password
+    sources:
+      youtube: true    # Enable YouTube support
+      soundcloud: true # Enable SoundCloud support
+    bufferDurationMs: 400
+    youtubePlaylistLoadLimit:
+```
+
+3. Start Lavalink server:
+```bash
+java -jar Lavalink.jar
+```
 
 ### Installation
 
 ```bash
 # Check your Node.js version first
-node --version # Should show v18.x.x
+node --version # Should be above v18.x.x
 
-# If needed, install Node.js v18 from:
+# If needed, install Node.js v18+ from:
 # https://nodejs.org/download/release/v18.19.0/
 
-# Alternatively, use nvm (Node Version Manager) to install Node.js v18:
-nvm install 18
-nvm use 18
+# Alternatively, use nvm (Node Version Manager) to install Node.js v18+:
+nvm install latest
+nvm use latest
 ```
 
 ### Bot Installation
@@ -86,8 +111,11 @@ npm install
 Create a `.env` file:
 ```bash
 DISCORD_TOKEN=your_bot_token
-CLIENT_ID=your_client_id
-GUILD_ID=your_server_id
+CLIENT_ID=your_client_id  
+GUILD_ID=your_guild_id
+LAVALINK_HOST=your_host
+LAVALINK_PORT=the_port
+LAVALINK_PASSWORD=password
 ```
 
 ### Start
