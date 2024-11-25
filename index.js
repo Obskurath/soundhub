@@ -11,6 +11,8 @@ const { LavalinkManager } = require("lavalink-client");
 
 const fs = require("node:fs");
 const path = require("node:path");
+const PlayerEvents = require("./nodeEvents/Player");
+const NodesEvents = require("./nodeEvents/Nodes");
 
 const client = new Client({
     intents: [
@@ -26,9 +28,9 @@ client.lavalink = new LavalinkManager({
     // Configure Lavalink nodes (a list of nodes that Lavalink can connect to)
     nodes: [
         {
-            authorization: "NAIGLAVA-dash.techbyte.host", // // Lavalink authorization key (must be set according to your Lavalink server configuration)
-            host: "lavahatry4.techbyte.host", // // The host address of your Lavalink node (e.g., 'localhost' or an external server address)
-            port: 3000, // Port number that Lavalink is running on (default is 2333, but it's set to 3000 in this case)
+            authorization: "youshallnotpass", // // Lavalink authorization key (must be set according to your Lavalink server configuration)
+            host: "localhost", // // The host address of your Lavalink node (e.g., 'localhost' or an external server address)
+            port: 2333, // Port number that Lavalink is running on (default is 2333, but it's set to 3000 in this case)
             id: "Soundhub", // // Unique identifier for the Lavalink node (useful if you're running multiple nodes, typically set to 'default' if only one node)
         }
     ],
@@ -78,9 +80,8 @@ client.on("ready", () => {
     client.lavalink.init(client.user)
 });
 
-client.lavalink.nodeManager.on("connect", (node, payload) => {
-    console.log(`The Lavalink Node #${node.id} connected`);
-});
+PlayerEvents(client);
+NodesEvents(client);
 
 client.on("interactionCreate", async interaction => {
     if (!interaction.isCommand()) return;
