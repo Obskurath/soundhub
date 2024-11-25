@@ -29,6 +29,7 @@
 | `/loop`   | Repeat Song         |
 | `/volume` | Adjust the music volume |
 | `/seek` | Fast forward the song time. |
+| `/filters` | Command to select song filters |
 
 ## 🚀 Setup
 
