@@ -28,9 +28,9 @@ client.lavalink = new LavalinkManager({
     // Configure Lavalink nodes (a list of nodes that Lavalink can connect to)
     nodes: [
         {
-            authorization: "NAIGLAVA-dash.techbyte.host", // // Lavalink authorization key (must be set according to your Lavalink server configuration)
-            host: "lavahatry4.techbyte.host", // // The host address of your Lavalink node (e.g., 'localhost' or an external server address)
-            port: 3000, // Port number that Lavalink is running on (default is 2333, but it's set to 3000 in this case)
+            authorization: process.env.LAVALINK_PASSWORD, // // Lavalink authorization key (must be set according to your Lavalink server configuration)
+            host: process.env.LAVALINK_HOST, // // The host address of your Lavalink node (e.g., 'localhost' or an external server address)
+            port: parseInt(process.env.LAVALINK_PORT), // Port number that Lavalink is running on (default is 2333)
             id: "Soundhub", // // Unique identifier for the Lavalink node (useful if you're running multiple nodes, typically set to 'default' if only one node)
         }
     ],

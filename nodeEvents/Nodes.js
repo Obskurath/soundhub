@@ -1,11 +1,21 @@
+// Function to handle Lavalink node events
 function NodesEvents(client) {
+    // Listen to the 'connect' event when a node connects to Lavalink
     client.lavalink.nodeManager.on('connect', (node) => {
-        console.log(`[NODES] -> connected`)
-    }).on('disconnect', (node) => {
-        console.log(`[NODES] -> disconnect`)
-    }).on('reconnecting', (node) => {
-        console.log(`[NODES] -> reconnecting`)
+        // Log a message when a node is successfully connected
+        console.log(`[NODES] -> connected`);
+    })
+    // Listen to the 'disconnect' event when a node disconnects from Lavalink
+    .on('disconnect', (node) => {
+        // Log a message when a node is disconnected
+        console.log(`[NODES] -> disconnect`);
+    })
+    // Listen to the 'reconnecting' event when a node is attempting to reconnect
+    .on('reconnecting', (node) => {
+        // Log a message when a node is attempting to reconnect
+        console.log(`[NODES] -> reconnecting`);
     })
 }
 
-module.exports = NodesEvents
+// Export the NodesEvents function to use it elsewhere in the project
+module.exports = NodesEvents;
