@@ -5,6 +5,8 @@ module.exports = {
         .setName("play").setDescription("Play a song from a query or URL")
         .addStringOption(option => option.setName("query").setDescription("The Song name or URL to play").setRequired(true)),
     async execute({ client, interaction }) {
+        if (!interaction.guildId) return;
+
         await interaction.deferReply();
 
         const query = interaction.options.getString("query");
@@ -19,7 +21,7 @@ module.exports = {
             textChannelId: interaction.channel.id,
             selfDeaf: true,
             selfMute: false,
-            volume: 100, // Default volume
+            volume: 80, // Default volume
         });
         // Check if the player is already connected to a voice channel
         const connected = player.connected;
@@ -27,7 +29,7 @@ module.exports = {
 
         try {
             // Search for the song based on the query (song name or URL)
-            const response = await player.search({ query, source: "scsearch" }, interaction.user);
+            const response = await player.search({ query, source: "ytsearch" }, interaction.user);
 
             if (!response || !response.tracks.length) {
                 return interaction.editReply(`No tracks found for: ${query}`);

@@ -25,9 +25,9 @@ const client = new Client({
 client.lavalink = new LavalinkManager({
     nodes: [
         {
-            authorization: "youshallnotpass",
-            host: "localhost",
-            port: 5000,
+            authorization: "NAIGLAVA-dash.techbyte.host",
+            host: "lavahatry4.techbyte.host",
+            port: 3000,
             id: "testnode",
         }
     ],
