@@ -1,10 +1,12 @@
 require("dotenv").config();
+const {
+    Client,
+    GatewayIntentBits,
+    Collection,
+    REST
+} = require("discord.js");
 
-const { REST } = require("@discordjs/rest");
-const { Routes } = require("discord-api-types/v9");
-const { Client, GatewayIntentBits, Collection, Guild, Message, VoiceState } = require("discord.js");
-const { Player } = require("discord-player");
-const { YoutubeiExtractor } = require("discord-player-youtubei");
+const { Routes } = require("discord-api-types/v10");
 
 const fs = require("node:fs");
 const path = require("node:path");
@@ -32,30 +34,16 @@ for (const file of commandsFiles) {
     commands.push(command.data.toJSON());
 }
 
-// Create NEW PLAYER  
-
-client.player = new Player(client, {
-    
-    ytdlOptions: {
-        quality: "highestaudio",
-        highWaterMark: 1 << 25
-    }
-});
-
-// Register the YouTube extractor (Youtubei)
-client.player.extractors.register(YoutubeiExtractor, {})
-
 client.on("ready", () => {
-    const guild_ids = client.guilds.cache.map(guild => guild.id);
-
-    const rest = new REST({ version: "9" }).setToken(process.env.DISCORD_TOKEN);
-    for (const guildId of guild_ids) {
-        rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, guildId), {
-            body: commands
-        })
-            .then(() => console.log(`Added commands to ${guildId}`))
-            .catch(console.error);
-    }
+    // Note: The version has been updated to "10" because Discord API v9 has been deprecated.
+    // Discord.js v14 and above now supports version 10 of the API, and it is required for compatibility.
+    // Upgrading to version 10 ensures better security and access to the latest features of Discord API.
+    const rest = new REST({ version: "10" }).setToken(process.env.DISCORD_TOKEN);
+    rest.put(Routes.applicationCommands(process.env.CLIENT_ID), {
+        body: commands,
+    })
+        .then(() => console.log('Successfully registered global commands!'))
+        .catch(console.error);
     console.log(`Logged in as ${client.user.tag}!`);
 });
 

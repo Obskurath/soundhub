@@ -12,8 +12,10 @@
   "author": "Obskurath",
   "license": "ISC",
   "dependencies": {
+    "discord-api-types": "^0.37.107",
     "discord.js": "^14.16.3",
     "dotenv": "^16.4.5",
+    "lavalink-client": "^2.4.1",
     "nodemon": "^3.1.7"
   }
 }
