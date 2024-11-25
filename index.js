@@ -17,25 +17,31 @@ const client = new Client({
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.GuildVoiceStates,
-        GatewayIntentBits.MessageContent,
+        // GatewayIntentBits.MessageContent,
     ]
 });
 
 // create instance lavalink
 client.lavalink = new LavalinkManager({
+    // Configure Lavalink nodes (a list of nodes that Lavalink can connect to)
     nodes: [
         {
-            authorization: "NAIGLAVA-dash.techbyte.host",
-            host: "lavahatry4.techbyte.host",
-            port: 3000,
-            id: "Soundhub",
+            authorization: "NAIGLAVA-dash.techbyte.host", // // Lavalink authorization key (must be set according to your Lavalink server configuration)
+            host: "lavahatry4.techbyte.host", // // The host address of your Lavalink node (e.g., 'localhost' or an external server address)
+            port: 3000, // Port number that Lavalink is running on (default is 2333, but it's set to 3000 in this case)
+            id: "Soundhub", // // Unique identifier for the Lavalink node (useful if you're running multiple nodes, typically set to 'default' if only one node)
         }
     ],
+     // Function that sends messages to the appropriate shard (necessary for large bots with multiple shards)
     sendToShard: (guildId, payload) => client.guilds.cache.get(guildId)?.shard?.send(payload),
+
+     // Auto skip the track after it's finished playing (this will automatically play the next track in the queue)
     autoSkip: true,
+
+     // Client configuration, containing bot-specific details like ID and username
     client: {
-        id: process.env.CLIENT_ID,
-        username: "Soundhub",
+        id: process.env.CLIENT_ID, // The bot's client ID fetched from environment variables (keep sensitive information out of the codebase)
+        username: "Soundhub",  // The bot's username (could be left empty if you don't need to specify it explicitly)
     },
 });
 
