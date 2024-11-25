@@ -28,14 +28,14 @@ client.lavalink = new LavalinkManager({
             authorization: "NAIGLAVA-dash.techbyte.host",
             host: "lavahatry4.techbyte.host",
             port: 3000,
-            id: "testnode",
+            id: "Soundhub",
         }
     ],
     sendToShard: (guildId, payload) => client.guilds.cache.get(guildId)?.shard?.send(payload),
     autoSkip: true,
     client: {
         id: process.env.CLIENT_ID,
-        username: "TESTBOT",
+        username: "Soundhub",
     },
 });
 

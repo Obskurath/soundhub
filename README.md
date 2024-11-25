@@ -26,6 +26,7 @@
 | `/skip`    | Skip track         |
 | `/queue`   | View queue         |
 | `/leave`   | Leave Channel         |
+| `/loop`   | Repeat Song         |
 
 ## 🚀 Setup
 
