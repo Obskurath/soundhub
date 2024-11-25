@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@discordjs/builders':
+        specifier: ^1.9.0
+        version: 1.9.0
       discord-api-types:
         specifier: ^0.37.107
         version: 0.37.107
