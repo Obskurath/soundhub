@@ -27,6 +27,8 @@
 | `/queue`   | View queue         |
 | `/leave`   | Leave Channel         |
 | `/loop`   | Repeat Song         |
+| `/volume` | Adjust the music volume |
+| `/seek` | Fast forward the song time. |
 
 ## 🚀 Setup
 

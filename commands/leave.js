@@ -43,6 +43,7 @@ module.exports = {
         } catch (error) {
             // Log any errors that occur during the command execution
             console.error(error);
+            return interaction.editReply("An error occurred while processing the command.");
         }
     }
 };
