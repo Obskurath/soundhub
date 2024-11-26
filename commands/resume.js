@@ -27,8 +27,13 @@ async function resumeTrack({ client, interaction }) {
         }
 
         if (player.paused) {
-            await player.pause(false);
-            await interaction.editReply("Resumed playing!");
+            try {
+                await player.resume();
+                await interaction.editReply("Resumed playing!");
+            } catch (error) {
+                console.error(error);
+                await interaction.editReply("An error occurred while resuming the player.");
+            }
         } else {
             await interaction.editReply("The player is already playing!");
         }
