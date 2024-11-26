@@ -57,9 +57,8 @@ module.exports = {
 
         const embed = new EmbedBuilder()
             .setColor('Random')
-            .setDescription(`🎵 Playing now:  **[${track.info.title}](${track.info.uri})**\n\n**👤 Requested by**: ${interaction.user.username}\n**📡 Channel**: ${voiceChannel.name}`)
+            .setDescription(`🎵 Playing now:  **[${track.info.title}](${track.info.uri})**\n\n Requested by: ${interaction.user.username}\n`)
             .setThumbnail(thumbnailUrl)
-            .setTimestamp()
 
         const row = new ActionRowBuilder()
             .addComponents(
