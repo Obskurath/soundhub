@@ -14,6 +14,9 @@ const path = require("node:path");
 const PlayerEvents = require("./nodeEvents/Player");
 const NodesEvents = require("./nodeEvents/Nodes");
 
+// Commands 
+const { skipTrack } = require("./commands/skip");
+
 class Bot {
     constructor() {
         // Create a new client instance
@@ -123,7 +126,7 @@ class Bot {
                 break;
             case 'skip':
                 // Handle skip button
-                await interaction.reply('Skip button clicked!');
+                await skipTrack({ client: this.client, interaction });
                 break;
             default:
                 await interaction.reply('Unknown button clicked!');
