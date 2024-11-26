@@ -82,7 +82,7 @@ module.exports = {
         const row = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
-                    .setCustomId('play')
+                    .setCustomId('resume')
                     .setEmoji('▶️')
                     .setStyle(ButtonStyle.Secondary),
                 new ButtonBuilder()
