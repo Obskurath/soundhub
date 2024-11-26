@@ -27,8 +27,13 @@ async function pauseTrack({ client, interaction }) {
         }
 
         if (!player.paused) {
-            await player.pause(true);
-            await interaction.editReply("Paused playing!");
+            try {
+                await player.pause();
+                await interaction.editReply("Paused playing!");
+            } catch (error) {
+                console.error(error);
+                await interaction.editReply("An error occurred while pausing the player.");
+            }
         } else {
             await interaction.editReply("The player is already paused!");
         }
