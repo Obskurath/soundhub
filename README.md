@@ -64,7 +64,7 @@
 1. Download Lavalink v4.0.0 or higher from [GitHub Releases](https://github.com/lavalink-devs/Lavalink/releases)
 2. Setup Lavalink Configuration
    1. Create a new file named `application.yml` in the same directory as your `Lavalink.jar`
-   2. Copy the configuration below or download from [official example](https://github.com/lavalink-devs/Lavalink/blob/master/LavalinkServer/application.yml.example)
+   2. Copy the configuration below or download from [official example](https://github.com/lavalink-devs/Lavalink/blob/master/LavalinkServer/application.yml.example) (Recommended)
 
 ```yaml
 # Basic Lavalink configuration
