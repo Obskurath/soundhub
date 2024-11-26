@@ -75,7 +75,7 @@ module.exports = {
     thumbnail: {
         url: currentTrack?.info.artworkUrl || "https://example.com/default-thumbnail.png",
     },
-};
+}; 
         await interaction.followUp({ embeds: [embed] });
 
         const row1 = new ActionRowBuilder()
