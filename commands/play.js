@@ -52,27 +52,50 @@ module.exports = {
             await player.play();
         }
 
+        const currentTrack = player.queue.current;
+        if (!currentTrack) {
+            return interaction.reply("No track is currently playing.");
+        }
+
         const thumbnailUrl = track.info.artworkUrl || 'https://example.com/thumbnail.jpg';
         const duration = track.info.length || "Unknown";
 
-        const embed = new EmbedBuilder()
-            .setColor('Random')
-            .setDescription(`🎵 Playing now:  **[${track.info.title}](${track.info.uri})**\n\n Requested by: ${interaction.user.username}\n`)
-            .setThumbnail(thumbnailUrl)
+        const embed = {
+    color: "12745742"	,
+    description: currentTrack
+        ? `🎵 **Song Added!**\n\n> **🎶 Now Playing:** \`${currentTrack.info.title}\`\n\n✨ Enjoy the groove!`
+        : `🎵 **Song Added!**\n\n> 🛑 **Queue is empty!**\n\n🎧 Add more tracks to keep the party alive!`,
+    fields: [
+        {
+            name: "🎼 Queue Status",
+            value: player.queue.tracks.length > 0
+                ? `🎶 **Next Up:** \`${player.queue.tracks[0]?.info.title || "Unknown Title"}\``
+                : "🛑 **No more tracks queued.**",
+        },
+    ],
+    thumbnail: {
+        url: currentTrack?.info.thumbnail || "https://example.com/default-thumbnail.png",
+    },
+};
+        await interaction.followUp({ embeds: [embed] });
 
         const row = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
-                    .setCustomId('play/pause')
-                    .setEmoji('⏯')
+                    .setCustomId('play')
+                    .setEmoji('▶️')
+                    .setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder()
+                    .setCustomId('pause')
+                    .setEmoji('⏸️')
+                    .setStyle(ButtonStyle.Secondary),
+                    new ButtonBuilder()
+                    .setCustomId('skip')
+                    .setEmoji('⏭️')
                     .setStyle(ButtonStyle.Secondary),
                 new ButtonBuilder()
                     .setCustomId('stop')
                     .setEmoji('⏹️')
-                    .setStyle(ButtonStyle.Secondary),
-                new ButtonBuilder()
-                    .setCustomId('skip')
-                    .setEmoji('⏭️')
                     .setStyle(ButtonStyle.Secondary),
                 new ButtonBuilder()
                     .setLabel('Listen here')
