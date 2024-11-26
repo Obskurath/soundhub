@@ -1,9 +1,9 @@
-const { 
-    SlashCommandBuilder, 
-    EmbedBuilder, 
-    ActionRowBuilder, 
-    ButtonBuilder, 
-    ButtonStyle 
+const {
+    SlashCommandBuilder,
+    EmbedBuilder,
+    ActionRowBuilder,
+    ButtonBuilder,
+    ButtonStyle
 } = require('discord.js');
 
 module.exports = {
@@ -60,7 +60,6 @@ module.exports = {
             .setDescription(`🎵 Playing now:  **[${track.info.title}](${track.info.uri})**\n\n**👤 Requested by**: ${interaction.user.username}\n**📡 Channel**: ${voiceChannel.name}`)
             .setThumbnail(thumbnailUrl)
             .setTimestamp()
-            
 
         const row = new ActionRowBuilder()
             .addComponents(
@@ -77,11 +76,11 @@ module.exports = {
                     .setEmoji('⏭️')
                     .setStyle(ButtonStyle.Secondary),
                 new ButtonBuilder()
-                    .setCustomId('Listen here')
-                    .setStyle(ButtonStyle.Link),
+                    .setLabel('Listen here')
+                    .setStyle(ButtonStyle.Link)
+                    .setURL(track.info.uri)
             );
 
-        await interaction.editReply({ embeds: [embed] , components: [row], ephemeral: true });
-
+        await interaction.editReply({ embeds: [embed], components: [row] });
     }
 };

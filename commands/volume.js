@@ -1,11 +1,16 @@
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
-    // Create the Slash Command with the name "leave" and description
-    // This command will destroy the song and make the bot leave the voice channel
     data: new SlashCommandBuilder()
-        .setName("leave")
-        .setDescription("Destroy the song and leave the voice channel"),
+        .setName("volume") // Command name
+        .setDescription("Command the bot to adjust the song's volume.") // Description of the command
+        .addIntegerOption(option =>
+            option.setName("volume") // Option name for the volume level
+                .setDescription("The level you want, ranging from 0 to 100.") // Description of the option
+                .setMaxValue(100) // Maximum value for volume
+                .setMinValue(0) // Minimum value for volume
+                .setRequired(true) // Make this option mandatory
+        ),
 
     // The execute function will be triggered when the user invokes the command
     async execute({ client, interaction }) {
@@ -35,14 +40,15 @@ module.exports = {
             // If there is no song currently playing in the queue, send a reply saying so
             if (!player.queue.current) return interaction.editReply("There are no songs playing right now.");
 
-            // Destroy the player (stop the song and disconnect from the voice channel)
-            await player.destroy();
+            // Set the volume to the specified level from the user's input
+            await player.setVolume(interaction.options.getInteger("volume"));
 
-            // Reply to the user saying that the bot has left the voice channel
-            await interaction.editReply("Exited the voice channel. If you want to play the song again, you can order me now.");
+            // Send a reply confirming the current volume level
+            await interaction.editReply(`Current volume adjusted to: ${player.volume}%`);
         } catch (error) {
             // Log any errors that occur during the command execution
             console.error(error);
+            // Send a generic error message to the user
             return interaction.editReply("An error occurred while processing the command.");
         }
     }
