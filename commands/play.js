@@ -58,7 +58,6 @@ module.exports = {
         }
 
         const thumbnailUrl = track.info.artworkUrl || 'https://example.com/thumbnail.jpg';
-        const duration = track.info.length || "Unknown";
 
         const embed = {
     color: "12745742"	,
@@ -74,7 +73,7 @@ module.exports = {
         },
     ],
     thumbnail: {
-        url: currentTrack?.info.thumbnail || "https://example.com/default-thumbnail.png",
+        url: currentTrack?.info.artworkUrl || "https://example.com/default-thumbnail.png",
     },
 };
         await interaction.followUp({ embeds: [embed] });
