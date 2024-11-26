@@ -136,7 +136,7 @@ class Bot {
                 // Handle stop button
                 if (player) {
                     player.destroy();
-                    await interaction.reply("Stopped playing!");
+                    await interaction.reply("Why you bully me? :c");
                 } else {
                     await interaction.reply("No player found!");
                 }
