@@ -16,6 +16,8 @@ const NodesEvents = require("./nodeEvents/Nodes");
 
 // Commands 
 const { skipTrack } = require("./commands/skip");
+const { resumeTrack } = require("./commands/resume");
+const { pauseTrack } = require("./commands/pause");
 
 class Bot {
     constructor() {
@@ -114,19 +116,30 @@ class Bot {
     // Handle button interactions
     async handleButtonInteraction(interaction) {
         const customId = interaction.customId;
+        const guildId = interaction.guildId;
+        const player = this.client.lavalink.players.get(guildId);
 
         switch (customId) {
-            case 'play/pause':
-                // Handle play/pause button
-                await interaction.reply('Play/Pause button clicked!');
+            case 'resume':
+                // Handle resume button
+                await resumeTrack({ client: this.client, interaction });
+                break;
+            case 'pause':
+                // Handle pause button
+                await pauseTrack({ client: this.client, interaction });
+                break;
+                case 'skip':
+                // Handle skip button
+                await skipTrack({ client: this.client, interaction });
                 break;
             case 'stop':
                 // Handle stop button
-                await interaction.reply('Stop button clicked!');
-                break;
-            case 'skip':
-                // Handle skip button
-                await skipTrack({ client: this.client, interaction });
+                if (player) {
+                    player.destroy();
+                    await interaction.reply("Stopped playing!");
+                } else {
+                    await interaction.reply("No player found!");
+                }
                 break;
             default:
                 await interaction.reply('Unknown button clicked!');
