@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -9,50 +9,66 @@ module.exports = {
                 .setDescription("Skip to the next song queue.")  // Description of what this option does
                 .setRequired(false)),  // This option is optional, so it's not required
 
-    // The execute function will be triggered when the user invokes the command
     async execute({ client, interaction }) {
         try {
-            // Ensure the interaction is part of a guild (server) before proceeding
             if (!interaction.guildId) return;
 
-            // Defer the reply to allow time for processing the command
             await interaction.deferReply();
 
-            // Get the voice channel the user is currently in
             const voiceChannel = interaction.member.voice.channelId;
 
-            // If the user is not in a voice channel, reply with an error message
-            if (!voiceChannel) return interaction.editReply("Please join the voice channel before using the command.");
+            if (!voiceChannel) {
+                return interaction.editReply("Please join the voice channel before using the command.");
+            }
 
-            // Retrieve the Lavalink player associated with the current guild
             const player = client.lavalink.getPlayer(interaction.guildId);
 
-            // If no player is found, it means the bot is not connected to a voice channel
-            if (!player) return interaction.editReply("Unfortunately, the bot is not connected to the voice channel you are on.");
+            if (!player) {
+                return interaction.editReply("Unfortunately, the bot is not connected to the voice channel you are on.");
+            }
 
-            // Check if the user is in the same voice channel as the bot
-            if (player.voiceChannelId !== voiceChannel) return interaction.editReply("You must be in the same voice channel as the bot.");
+            if (player.voiceChannelId !== voiceChannel) {
+                return interaction.editReply("You must be in the same voice channel as the bot.");
+            }
 
-            // If no song is currently playing, send a reply stating that
-            if (!player.queue.current) return interaction.editReply("There are no songs playing right now.");
+            if (!player.queue.current) {
+                return interaction.editReply("There are no songs playing right now.");
+            }
 
-            const currentTrack = player.queue.current;  // Get the current song being played
-            const nextTrack = player.queue.tracks[0];  // Get the next song in the queue
+            const currentTrack = player.queue.current; // Get the current song being played
+            const nextTrack = player.queue.tracks[0]; // Get the next song in the queue
 
-            // If no next track is available, return an error message
-            if (!nextTrack) return interaction.editReply("Can't find a song that needs to be skipped.");
+            if (!nextTrack) {
+                return interaction.editReply("Can't find a song that needs to be skipped.");
+            }
 
-            // If an optional integer parameter is provided (e.g., skip to specific track in queue), use it
+            // Create the embed AFTER currentTrack and nextTrack are defined
+            const embed = {
+                color: "12745742",
+                description: player.queue.tracks.length > 0
+                    ? `🎵 **Song Skipped!**\n\n> **⏩ Skipped:** \`${currentTrack.info.title}\`\n> **🎶 Now Playing:** \`${player.queue.tracks[0].info.title}\`\n\n✨ Enjoy the groove!`
+                    : `🎵 **Song Skipped!**\n\n> **⏩ Skipped:** \`${currentTrack.info.title}\`\n> 🛑 **Queue is empty!**\n\n🎧 Add more tracks to keep the party alive!`,
+                fields: [
+                    {
+                        name: "🎼 Queue Status",
+                        value: player.queue.tracks.length > 1
+                            ? `🎶 **Next Up:** \`${player.queue.tracks[1].info.title}\``
+                            : "🛑 **No more tracks queued.**",
+                    },
+                ],
+                thumbnail: {
+                    url: currentTrack.info.thumbnail || "https://example.com/default-thumbnail.png", // Ensure valid URL for the thumbnail
+                },
+            };
+            
+            
+
+            // Skip the song
             await player.skip(interaction.options.getInteger("skip_queue"));
 
-            // Send a reply indicating which song was skipped and what is now playing
-            await interaction.editReply(
-                currentTrack  // If there is a current track playing
-                    ? `Skipped the song ${currentTrack.info.title}. Now playing: ${nextTrack.info.title}`  // Show current song title and next song
-                    : `Skipped to the next song: ${nextTrack.info.title}`  // If no current song, just show next song
-            );
+            // Send the embed message
+            await interaction.followUp({ embeds: [embed] });
         } catch (error) {
-            // Log any errors that occur during the command execution for debugging
             console.error(error);
             return interaction.editReply("An error occurred while processing the command.");
         }
