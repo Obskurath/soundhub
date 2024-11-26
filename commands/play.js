@@ -105,8 +105,8 @@ module.exports = {
         const row2 = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
-                    .setCustomId('pending button (maybe loop?')
-                    .setEmoji('▶️')
+                    .setCustomId('queue')
+                    .setLabel('View Queue')
                     .setStyle(ButtonStyle.Secondary),
             );
 
