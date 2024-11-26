@@ -63,7 +63,7 @@ module.exports = {
         const embed = {
     color: "12745742"	,
     description: currentTrack
-        ? `🎵 **Song Added!**\n\n> **🎶 Now Playing:** \`${currentTrack.info.title}\`\n\n✨ Enjoy the groove!`
+        ? `🎵 **Song Added!** \`${track.info.title}\`\n\n> **🎶 Now Playing:** \`${currentTrack.info.title}\`\n\n✨ Enjoy the groove!`
         : `🎵 **Song Added!**\n\n> 🛑 **Queue is empty!**\n\n🎧 Add more tracks to keep the party alive!`,
     fields: [
         {
