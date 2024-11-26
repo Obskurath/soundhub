@@ -79,7 +79,7 @@ module.exports = {
 };
         await interaction.followUp({ embeds: [embed] });
 
-        const row = new ActionRowBuilder()
+        const row1 = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
                     .setCustomId('resume')
@@ -89,7 +89,7 @@ module.exports = {
                     .setCustomId('pause')
                     .setEmoji('⏸️')
                     .setStyle(ButtonStyle.Secondary),
-                    new ButtonBuilder()
+                new ButtonBuilder()
                     .setCustomId('skip')
                     .setEmoji('⏭️')
                     .setStyle(ButtonStyle.Secondary),
@@ -103,6 +103,14 @@ module.exports = {
                     .setURL(track.info.uri)
             );
 
-        await interaction.editReply({ embeds: [embed], components: [row] });
+        const row2 = new ActionRowBuilder()
+            .addComponents(
+                new ButtonBuilder()
+                    .setCustomId('pending button (maybe loop?')
+                    .setEmoji('▶️')
+                    .setStyle(ButtonStyle.Secondary),
+            );
+
+        await interaction.editReply({ embeds: [embed], components: [row1 , row2] });
     }
 };
