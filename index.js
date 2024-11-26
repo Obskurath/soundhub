@@ -82,22 +82,53 @@ class Bot {
 
         // Interaction event
         this.client.on("interactionCreate", async interaction => {
-            if (!interaction.isCommand()) return;
+            if (interaction.isCommand()) {
+                const command = this.client.commands.get(interaction.commandName);
+                if (!command) return;
 
-            const command = this.client.commands.get(interaction.commandName);
-            if (!command) return;
-
-            try {
-                await command.execute({ client: this.client, interaction });
-            } catch (err) {
-                console.error("Error executing command:", err);
-                await interaction.reply("❌ An error occurred while executing that command");
+                try {
+                    await command.execute({ client: this.client, interaction });
+                } catch (err) {
+                    console.error("Error executing command:", err);
+                    await interaction.reply("❌ An error occurred while executing that command");
+                }
+            } else if (interaction.isButton()) {
+                // Handle button interactions
+                try {
+                    await this.handleButtonInteraction(interaction);
+                } catch (err) {
+                    console.error("Error handling button interaction:", err);
+                    await interaction.reply("❌ An error occurred while handling the button interaction");
+                }
             }
         });
 
         // Player and Node event handling
         PlayerEvents(this.client);
         NodesEvents(this.client);
+    }
+
+    // Handle button interactions
+    async handleButtonInteraction(interaction) {
+        const customId = interaction.customId;
+
+        switch (customId) {
+            case 'play/pause':
+                // Handle play/pause button
+                await interaction.reply('Play/Pause button clicked!');
+                break;
+            case 'stop':
+                // Handle stop button
+                await interaction.reply('Stop button clicked!');
+                break;
+            case 'skip':
+                // Handle skip button
+                await interaction.reply('Skip button clicked!');
+                break;
+            default:
+                await interaction.reply('Unknown button clicked!');
+                break;
+        }
     }
 
     // Register the global slash commands
