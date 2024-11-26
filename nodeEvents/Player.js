@@ -9,11 +9,14 @@ function PlayerEvents(client) {
     .on('trackEnd', (player, track) => {
         // Log the track title when it ends
         console.log(`[Track End] -> ${track?.info?.title}`);
+        // Log the current queue length
+        console.log(`Queue length after track end: ${player.queue.length}`);
     })
     // Listen to the 'trackError' event when an error occurs with the track
     .on('trackError', (player, track) => {
         // Log the track title when there is an error
         console.log(`[Track Error] -> ${track?.info?.title}`);
+        console.error(`Error details: ${track?.error}`);
     })
     // Listen to the 'trackStuck' event when a track is stuck (e.g., if it can't be played properly)
     .on('trackStuck', (player, track) => {
@@ -24,7 +27,9 @@ function PlayerEvents(client) {
     .on('queueEnd', (player, track) => {
         // Log the title of the last track when the queue ends
         console.log(`[Queue Ended] -> ${track?.info?.title}`);
-    })
+        // Log the queue end event
+        console.log('Queue has ended.');
+    });
 }
 
 // Export the PlayerEvents function to use it elsewhere in the project
