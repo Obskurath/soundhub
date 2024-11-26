@@ -18,6 +18,7 @@ const NodesEvents = require("./nodeEvents/Nodes");
 const { skipTrack } = require("./commands/skip");
 const { resumeTrack } = require("./commands/resume");
 const { pauseTrack } = require("./commands/pause");
+const { displayQueue } = require("./commands/queue");
 
 class Bot {
     constructor() {
@@ -140,6 +141,10 @@ class Bot {
                 } else {
                     await interaction.reply("No player found!");
                 }
+                break;
+            case 'queue': 
+                //Handle queue button
+                await displayQueue({client: this.client, interaction})
                 break;
             default:
                 await interaction.reply('Unknown button clicked!');
