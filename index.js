@@ -25,6 +25,9 @@ const botConfig = require("./config/bot")
 const PlayerEvents = require("./nodeEvents/Player");
 const NodesEvents = require("./nodeEvents/Nodes");
 
+// Utility functions
+const { getAllFiles } = require("./utils/fileHelper")
+
 // Commands
 const { skipTrack } = require("./commands/music/skip");
 const { resumeTrack } = require("./commands/music/resume");
@@ -68,9 +71,7 @@ class Bot {
 // Load all slash commands
 loadCommands() {
     const commandsPath = path.join(__dirname, "commands");
-    const commandFiles = this.getAllFiles(commandsPath, ".js");
-
-    console.log("Command files found:", commandFiles); // Debugging log
+    const commandFiles = getAllFiles(commandsPath, ".js");
 
     for (const file of commandFiles) {
         const command = require(file);
@@ -82,21 +83,6 @@ loadCommands() {
             console.warn(`Invalid command structure in file: ${file}`); // Debugging log
         }
     }
-}
-
-// Helper function to get all files recursively
-getAllFiles(dirPath, ext, arrayOfFiles = []) {
-    const files = fs.readdirSync(dirPath);
-
-    files.forEach(file => {
-        if (fs.statSync(path.join(dirPath, file)).isDirectory()) {
-            arrayOfFiles = this.getAllFiles(path.join(dirPath, file), ext, arrayOfFiles);
-        } else if (file.endsWith(ext)) {
-            arrayOfFiles.push(path.join(dirPath, file));
-        }
-    });
-
-    return arrayOfFiles;
 }
 
     // Set up event listeners
