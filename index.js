@@ -6,6 +6,9 @@ const {
     REST
 } = require("discord.js");
 
+// Configs 
+const lavaLinkConfig = require("./config/lavalink")
+
 const { Routes } = require("discord-api-types/v10");
 const { LavalinkManager } = require("lavalink-client");
 
@@ -34,14 +37,7 @@ class Bot {
 
         // Lavalink manager initialization
         this.client.lavalink = new LavalinkManager({
-            nodes: [
-                {
-                    authorization: process.env.LAVALINK_PASSWORD,
-                    host: process.env.LAVALINK_HOST,
-                    port: parseInt(process.env.LAVALINK_PORT),
-                    id: "Soundhub",
-                }
-            ],
+            nodes: lavaLinkConfig.nodes,
             sendToShard: (guildId, payload) => this.client.guilds.cache.get(guildId)?.shard?.send(payload),
             autoSkip: true,
             client: {
