@@ -14,7 +14,14 @@ module.exports = {
         const embed = new EmbedBuilder()
             .setColor(0x0099ff)
             .setTitle('Bot Uptime ⏱️')
-            .setDescription(`The bot has been online for ${days}d ${hours}h ${minutes}m ${seconds}s`)
+            .setDescription('The bot has been online for:')
+            .addFields(
+                { name: 'Days', value: `${days}`, inline: true },
+                { name: 'Hours', value: `${hours}`, inline: true },
+                { name: 'Minutes', value: `${minutes}`, inline: true },
+                { name: 'Seconds', value: `${seconds}`, inline: true }
+            )
+            .setThumbnail(client.user.displayAvatarURL())
             .setFooter({ text: 'Uptime Info', iconURL: client.user.displayAvatarURL() })
             .setTimestamp();
 

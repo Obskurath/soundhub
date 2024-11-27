@@ -9,11 +9,12 @@ module.exports = {
         const commands = client.commands.map(cmd => `\`${cmd.data.name}\`: ${cmd.data.description}`).join('\n');
 
         const embed = new EmbedBuilder()
-            .setColor(12745742) 
-            .setTitle('Help - List of Commands')
+            .setColor(0x0099ff)
+            .setTitle('Help - List of Commands 📜')
             .setDescription('Here are the available commands:')
             .addFields({ name: 'Commands', value: commands })
-            .setFooter({ text: 'Use /command to execute a command' });
+            .setFooter({ text: 'Use /command to execute a command', iconURL: client.user.displayAvatarURL() })
+            .setTimestamp();
 
         await interaction.reply({ embeds: [embed], ephemeral: true });
     },
