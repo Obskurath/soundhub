@@ -26,10 +26,10 @@ const PlayerEvents = require("./nodeEvents/Player");
 const NodesEvents = require("./nodeEvents/Nodes");
 
 // Commands
-const { skipTrack } = require("./commands/skip");
-const { resumeTrack } = require("./commands/resume");
-const { pauseTrack } = require("./commands/pause");
-const { displayQueue } = require("./commands/queue");
+const { skipTrack } = require("./commands/music/skip");
+const { resumeTrack } = require("./commands/music/resume");
+const { pauseTrack } = require("./commands/music/pause");
+const { displayQueue } = require("./commands/music/queue");
 
 class Bot {
     constructor() {
@@ -65,18 +65,39 @@ class Bot {
         this.setupEventListeners();
     }
 
-    // Load all slash commands
-    loadCommands() {
-        const commandsPath = path.join(__dirname, "commands");
-        const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith(".js"));
+// Load all slash commands
+loadCommands() {
+    const commandsPath = path.join(__dirname, "commands");
+    const commandFiles = this.getAllFiles(commandsPath, ".js");
 
-        for (const file of commandFiles) {
-            const filePath = path.join(commandsPath, file);
-            const command = require(filePath);
+    console.log("Command files found:", commandFiles); // Debugging log
+
+    for (const file of commandFiles) {
+        const command = require(file);
+        if (command.data && command.execute) {
             this.client.commands.set(command.data.name, command);
             this.commands.push(command.data.toJSON());
+            console.log(`Loaded command: ${command.data.name}`); // Debugging log
+        } else {
+            console.warn(`Invalid command structure in file: ${file}`); // Debugging log
         }
     }
+}
+
+// Helper function to get all files recursively
+getAllFiles(dirPath, ext, arrayOfFiles = []) {
+    const files = fs.readdirSync(dirPath);
+
+    files.forEach(file => {
+        if (fs.statSync(path.join(dirPath, file)).isDirectory()) {
+            arrayOfFiles = this.getAllFiles(path.join(dirPath, file), ext, arrayOfFiles);
+        } else if (file.endsWith(ext)) {
+            arrayOfFiles.push(path.join(dirPath, file));
+        }
+    });
+
+    return arrayOfFiles;
+}
 
     // Set up event listeners
     setupEventListeners() {
