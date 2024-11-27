@@ -19,6 +19,7 @@ const { LavalinkManager } = require("lavalink-client");
 
 // Configs
 const lavaLinkConfig = require("./config/lavalink");
+const botConfig = require("./config/bot")
 
 // Event handlers
 const PlayerEvents = require("./nodeEvents/Player");
@@ -48,7 +49,7 @@ class Bot {
             sendToShard: (guildId, payload) => this.client.guilds.cache.get(guildId)?.shard?.send(payload),
             autoSkip: true,
             client: {
-                id: process.env.CLIENT_ID,
+                id: botConfig.clientId,
                 username: "Soundhub",
             },
         });
@@ -157,9 +158,9 @@ class Bot {
 
     // Register the global slash commands
     async registerCommands() {
-        const rest = new REST({ version: "10" }).setToken(process.env.DISCORD_TOKEN);
+        const rest = new REST({ version: "10" }).setToken(botConfig.token);
         try {
-            await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), { body: this.commands });
+            await rest.put(Routes.applicationCommands(botConfig.clientId), { body: this.commands });
             console.log("Successfully registered global commands!");
         } catch (error) {
             console.error("Error registering commands:", error);
@@ -168,7 +169,7 @@ class Bot {
 
     // Log the bot in
     login() {
-        this.client.login(process.env.DISCORD_TOKEN);
+        this.client.login(botConfig.token);
     }
 }
 
