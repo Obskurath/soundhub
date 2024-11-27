@@ -1,23 +1,30 @@
+// Load environment variables
 require("dotenv").config();
+
+// Node.js core modules
+const fs = require("node:fs");
+const path = require("node:path");
+
+// Discord.js modules
 const {
     Client,
     GatewayIntentBits,
     Collection,
     REST
 } = require("discord.js");
-
-// Configs 
-const lavaLinkConfig = require("./config/lavalink")
-
 const { Routes } = require("discord-api-types/v10");
+
+// Lavalink modules
 const { LavalinkManager } = require("lavalink-client");
 
-const fs = require("node:fs");
-const path = require("node:path");
+// Configs
+const lavaLinkConfig = require("./config/lavalink");
+
+// Event handlers
 const PlayerEvents = require("./nodeEvents/Player");
 const NodesEvents = require("./nodeEvents/Nodes");
 
-// Commands 
+// Commands
 const { skipTrack } = require("./commands/skip");
 const { resumeTrack } = require("./commands/resume");
 const { pauseTrack } = require("./commands/pause");
