@@ -168,7 +168,7 @@ loadCommands() {
         const rest = new REST({ version: "10" }).setToken(botConfig.token);
         try {
             await rest.put(Routes.applicationCommands(botConfig.clientId), { body: this.commands });
-            console.log("Successfully registered global commands!");
+            console.log("Succesfully loaded all application (/) commands.");
         } catch (error) {
             console.error("Error registering commands:", error);
         }
