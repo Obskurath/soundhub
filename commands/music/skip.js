@@ -33,12 +33,12 @@ async function skipTrack({ client, interaction }) {
             return interaction.editReply("Can't find a song that needs to be skipped.");
         }
 
-        // Create the embed AFTER currentTrack and nextTrack are defined
+        // Create the embed AFTER currentTrack and nextTrack are defined ${player.queue.tracks[0].info.title} 
         const embed = {
             color: "12745742",
             description: player.queue.tracks.length > 0
-                ? `🎵 **Song Skipped!**\n\n> **⏩ Skipped:** \`${currentTrack.info.title}\`\n> **🎶 Now Playing:** \`${player.queue.tracks[0].info.title}\`\n\n✨ Enjoy the groove!`
-                : `🎵 **Song Skipped!**\n\n> **⏩ Skipped:** \`${currentTrack.info.title}\`\n> 🛑 **Queue is empty!**\n\n🎧 Add more tracks to keep the party alive!`,
+                ? `🎵 **Song Skipped!**\n\n> **🎶 Now Playing:** \`${player.queue.tracks[0].info.title}\`\n> **⏩ Skipped:** \`${currentTrack.info.title}\`\n\n✨ Enjoy the groove!`
+                : `🎵 **Song Skipped!**\n\n> **⏩ Skipped:** \`${player.queue.tracks[0].info.title}\`\n> 🛑 **Queue is empty!**\n\n🎧 Add more tracks to keep the party alive!`,
             fields: [
                 {
                     name: "🎼 Queue Status",
