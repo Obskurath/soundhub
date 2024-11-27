@@ -4,7 +4,7 @@ async function skipTrack({ client, interaction }) {
     try {
         if (!interaction.guildId) return;
 
-        await interaction.deferReply();
+        await interaction.deferReply({ephemeral:true});
 
         const voiceChannel = interaction.member.voice.channelId;
 
