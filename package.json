@@ -11,6 +11,9 @@
   },
   "author": "Obskurath",
   "license": "ISC",
+  "contributors": [
+    "NekoSakuraLucia (NekoMoew)"
+  ],
   "dependencies": {
     "@discordjs/builders": "^1.9.0",
     "discord-api-types": "^0.37.107",

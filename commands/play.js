@@ -57,25 +57,25 @@ module.exports = {
             return interaction.reply("No track is currently playing.");
         }
 
-        const thumbnailUrl = track.info.artworkUrl || 'https://example.com/thumbnail.jpg';
+        // const thumbnailUrl = track.info.artworkUrl || 'https://example.com/thumbnail.jpg';
 
         const embed = {
-    color: "12745742"	,
-    description: currentTrack
-        ? `🎵 **Song Added!** \`${track.info.title}\`\n\n> **🎶 Now Playing:** \`${currentTrack.info.title}\`\n\n✨ Enjoy the groove!`
-        : `🎵 **Song Added!**\n\n> 🛑 **Queue is empty!**\n\n🎧 Add more tracks to keep the party alive!`,
-    fields: [
-        {
-            name: "🎼 Queue Status",
-            value: player.queue.tracks.length > 0
-                ? `🎶 **Next Up:** \`${player.queue.tracks[0]?.info.title || "Unknown Title"}\``
-                : "🛑 **No more tracks queued.**",
-        },
-    ],
-    thumbnail: {
-        url: currentTrack?.info.artworkUrl || "https://example.com/default-thumbnail.png",
-    },
-}; 
+            color: "12745742",
+            description: currentTrack
+                ? `🎵 **Song Added!** \`${track.info.title}\`\n\n> **🎶 Now Playing:** \`${currentTrack.info.title}\`\n\n✨ Enjoy the groove!`
+                : `🎵 **Song Added!**\n\n> 🛑 **Queue is empty!**\n\n🎧 Add more tracks to keep the party alive!`,
+            fields: [
+                {
+                    name: "🎼 Queue Status",
+                    value: player.queue.tracks.length > 0
+                        ? `🎶 **Next Up:** \`${player.queue.tracks[0]?.info.title || "Unknown Title"}\``
+                        : "🛑 **No more tracks queued.**",
+                },
+            ],
+            thumbnail: {
+                url: currentTrack?.info.artworkUrl || "https://example.com/default-thumbnail.png",
+            },
+        };
         await interaction.followUp({ embeds: [embed] });
 
         const row1 = new ActionRowBuilder()
@@ -110,6 +110,6 @@ module.exports = {
                     .setStyle(ButtonStyle.Secondary),
             );
 
-        await interaction.editReply({ embeds: [embed], components: [row1 , row2] });
+        await interaction.editReply({ embeds: [embed], components: [row1, row2] });
     }
 };
