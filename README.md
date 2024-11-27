@@ -1,5 +1,5 @@
 # SoundHub 🎵
-> A powerful Discord music bot built with discord.js and discord-player.
+> A powerful Discord music bot built with discord.js and lavalink-client.
 
 ![SoundHub Preview](./assets/preview.png)
 
@@ -17,19 +17,25 @@
 
 ## 🎮 Commands
 
-| Command    | Description        |
-|------------|--------------------|
-| `/play`    | Play a song        |
-| `/pause`   | Pause track        |
-| `/resume`  | Resume playback    |
-| `/stop`    | Stop playing       |
-| `/skip`    | Skip track         |
-| `/queue`   | View queue         |
-| `/leave`   | Leave Channel         |
-| `/loop`   | Repeat Song         |
-| `/volume` | Adjust the music volume |
-| `/seek` | Fast forward the song time. |
-| `/filters` | Command to select song filters |
+| Command    | Description                |
+|------------|----------------------------|
+| `/play`    | Play a song                |
+| `/pause`   | Pause track                |
+| `/resume`  | Resume playback            |
+| `/stop`    | Stop playing               |
+| `/skip`    | Skip track                 |
+| `/queue`   | View queue                 |
+| `/leave`   | Leave Channel              |
+| `/loop`    | Repeat Song                |
+| `/volume`  | Adjust the music volume    |
+| `/seek`    | Fast forward the song time |
+| `/filters` | Command to select filters  |
+| `/help`    | Displays a list of commands|
+| `/info`    | Provides bot/server info   |
+| `/invite`  | Provides an invite link    |
+| `/ping`    | Replies with Pong!🏓       |
+| `/uptime`  | Shows bot uptime           |
+| `/userinfo`| Provides user information  |
 
 ## 🚀 Setup
 
@@ -78,7 +84,7 @@ lavalink:
       youtube: true    # Enable YouTube support
       soundcloud: true # Enable SoundCloud support
     bufferDurationMs: 400
-    youtubePlaylistLoadLimit:
+    youtubePlaylistLoadLimit: 6
 ```
 
 3. Start Lavalink server:
