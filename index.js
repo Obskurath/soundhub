@@ -148,9 +148,9 @@ loadCommands() {
                 // Handle stop button
                 if (player) {
                     player.destroy();
-                    await interaction.reply("Why you bully me? :c");
+                    await interaction.reply({content:"Why you bully me? :c", ephemeral: true});
                 } else {
-                    await interaction.reply("No player found!");
+                    await interaction.reply({content: "No player found!", ephemeral: true});
                 }
                 break;
             case 'queue': 
@@ -158,7 +158,7 @@ loadCommands() {
                 await displayQueue({client: this.client, interaction})
                 break;
             default:
-                await interaction.reply('Unknown button clicked!');
+                await interaction.reply({content:'Unknown button clicked!', ephemeral: true});
                 break;
         }
     }
