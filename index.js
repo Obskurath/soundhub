@@ -183,6 +183,32 @@ class Bot {
                     await interaction.reply("No player found!");
                 }
                 break;
+            case 'clear_queue':
+                if (player) {
+                    player.queue.tracks = [];
+                    await interaction.reply("The queue has been cleared!");
+                } else {
+                    await interaction.reply("No player found!");
+                }
+                break;
+            case 'shuffle_queue':
+                // Handle shuffle queue button
+                if (player) {
+                    const tracks = player.queue.tracks;
+                    if (tracks.length > 0) {
+                        // Shuffle the tracks in the queue
+                        for (let i = tracks.length - 1; i > 0; i--) {
+                            const j = Math.floor(Math.random() * (i + 1));
+                            [tracks[i], tracks[j]] = [tracks[j], tracks[i]]; // Swap tracks
+                        }
+                        await interaction.reply("The queue has been shuffled!");
+                    } else {
+                        await interaction.reply("There are no tracks in the queue to shuffle.");
+                    }
+                } else {
+                    await interaction.reply("No player found!");
+                }
+                break;
             default:
                 await interaction.reply({ content: 'Unknown button clicked!', ephemeral: true });
                 break;
