@@ -62,13 +62,13 @@ module.exports = {
         const embed = {
             color: "12745742",
             description: currentTrack
-                ? `🎵 **Now Playing:** \`${currentTrack.info.title}\`\n\n> **🎶 Song Added:** \`${track.info.title}\`\n\n✨ Enjoy the groove!`
+                ? `🎵 **Now Playing:** \`${currentTrack.info.title} - ${currentTrack.info.author || "Unknown Author"}\`\n\n> **🎶 Song Added:** \`${track.info.title} - ${track.info.author}\`\n\n✨ Enjoy the groove!`
                 : `🎵 **Song Added!**\n\n> 🛑 **Queue is empty!**\n\n🎧 Add more tracks to keep the party alive!`,
             fields: [
                 {
                     name: "🎼 Queue Status",
                     value: player.queue.tracks.length > 0
-                        ? `🎶 **Next Up:** \`${player.queue.tracks[0]?.info.title || "Unknown Title"}\``
+                        ? `🎶 **Next Up:** \`${player.queue.tracks[0]?.info.title || "Unknown Title"} - ${player.queue.tracks[0]?.info.author}\``
                         : "🛑 **No more tracks queued.**",
                 },
             ],
@@ -108,20 +108,20 @@ module.exports = {
                     .setCustomId('queue')
                     .setLabel('View Queue')
                     .setStyle(ButtonStyle.Secondary),
-            );
-
-        const row3 = new ActionRowBuilder()
-            .addComponents(
+                new ButtonBuilder()
+                    .setCustomId('volume_down')
+                    .setLabel('🔉 Volume Down')
+                    .setStyle(ButtonStyle.Secondary),
                 new ButtonBuilder()
                     .setCustomId('volume_up')
                     .setLabel("🔊 Volume Up")
                     .setStyle(ButtonStyle.Secondary),
-                new ButtonBuilder()
-                    .setCustomId('volume_down')
-                    .setLabel('🔉 Volume Down')
-                    .setStyle(ButtonStyle.Secondary)
-            )
+            );
 
-        await interaction.editReply({ embeds: [embed], components: [row1, row2, row3] });
+        
+                
+
+
+        await interaction.editReply({ embeds: [embed], components: [row1, row2,] });
     }
 };
