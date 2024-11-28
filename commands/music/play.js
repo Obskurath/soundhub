@@ -39,7 +39,7 @@ module.exports = {
 
         if (!player.connected) await player.connect();
 
-        const response = await player.search({ query, source: "scsearch" }, interaction.user);
+        const response = await player.search({ query, source: "ytmsearch" }, interaction.user);
 
         if (!response || !response.tracks.length) {
             return interaction.editReply(`No tracks found for: ${query}`);
