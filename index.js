@@ -68,22 +68,22 @@ class Bot {
         this.setupEventListeners();
     }
 
-// Load all slash commands
-loadCommands() {
-    const commandsPath = path.join(__dirname, "commands");
-    const commandFiles = getAllFiles(commandsPath, ".js");
+    // Load all slash commands
+    loadCommands() {
+        const commandsPath = path.join(__dirname, "commands");
+        const commandFiles = getAllFiles(commandsPath, ".js");
 
-    for (const file of commandFiles) {
-        const command = require(file);
-        if (command.data && command.execute) {
-            this.client.commands.set(command.data.name, command);
-            this.commands.push(command.data.toJSON());
-            console.log(`Loaded command: ${command.data.name}`); // Debugging log
-        } else {
-            console.warn(`Invalid command structure in file: ${file}`); // Debugging log
+        for (const file of commandFiles) {
+            const command = require(file);
+            if (command.data && command.execute) {
+                this.client.commands.set(command.data.name, command);
+                this.commands.push(command.data.toJSON());
+                console.log(`Loaded command: ${command.data.name}`); // Debugging log
+            } else {
+                console.warn(`Invalid command structure in file: ${file}`); // Debugging log
+            }
         }
     }
-}
 
     // Set up event listeners
     setupEventListeners() {
@@ -140,7 +140,7 @@ loadCommands() {
                 // Handle pause button
                 await pauseTrack({ client: this.client, interaction });
                 break;
-                case 'skip':
+            case 'skip':
                 // Handle skip button
                 await skipTrack({ client: this.client, interaction });
                 break;
@@ -148,17 +148,69 @@ loadCommands() {
                 // Handle stop button
                 if (player) {
                     player.destroy();
-                    await interaction.reply({content:"Why you bully me? :c", ephemeral: true});
+                    await interaction.reply({ content: "Why you bully me? :c", ephemeral: true });
                 } else {
-                    await interaction.reply({content: "No player found!", ephemeral: true});
+                    await interaction.reply({ content: "No player found!", ephemeral: true });
                 }
                 break;
-            case 'queue': 
+            case 'queue':
                 //Handle queue button
-                await displayQueue({client: this.client, interaction})
+                await displayQueue({ client: this.client, interaction })
+                break;
+            case 'volume_up':
+                if (player) {
+                    let currentVolume = player.volume;
+                    if (currentVolume < 100) {
+                        player.setVolume(currentVolume + 10)
+                        await interaction.reply(`Volume increased to ${currentVolume + 10}%`);
+                    } else {
+                        await interaction.reply("Volume is already at maximum!");
+                    }
+                } else {
+                    await interaction.reply("No player found!");
+                }
+                break;
+            case 'volume_down':
+                if (player) {
+                    let currentVolume = player.volume;
+                    if (currentVolume > 0) {
+                        player.setVolume(currentVolume - 10);
+                        await interaction.reply(`Volume decreased to ${currentVolume - 10}%`);
+                    } else {
+                        await interaction.reply("Volume is already at minimum!");
+                    }
+                } else {
+                    await interaction.reply("No player found!");
+                }
+                break;
+            case 'clear_queue':
+                if (player) {
+                    player.queue.tracks = [];
+                    await interaction.reply("The queue has been cleared!");
+                } else {
+                    await interaction.reply("No player found!");
+                }
+                break;
+            case 'shuffle_queue':
+                // Handle shuffle queue button
+                if (player) {
+                    const tracks = player.queue.tracks;
+                    if (tracks.length > 0) {
+                        // Shuffle the tracks in the queue
+                        for (let i = tracks.length - 1; i > 0; i--) {
+                            const j = Math.floor(Math.random() * (i + 1));
+                            [tracks[i], tracks[j]] = [tracks[j], tracks[i]]; // Swap tracks
+                        }
+                        await interaction.reply("The queue has been shuffled!");
+                    } else {
+                        await interaction.reply("There are no tracks in the queue to shuffle.");
+                    }
+                } else {
+                    await interaction.reply("No player found!");
+                }
                 break;
             default:
-                await interaction.reply({content:'Unknown button clicked!', ephemeral: true});
+                await interaction.reply({ content: 'Unknown button clicked!', ephemeral: true });
                 break;
         }
     }

@@ -61,7 +61,7 @@ module.exports = {
 
         const embed = {
             color: "12745742",
-            description: currentTrack 
+            description: currentTrack
                 ? `🎵 **Now Playing:** \`${currentTrack.info.title}\`\n\n> **🎶 Song Added:** \`${track.info.title}\`\n\n✨ Enjoy the groove!`
                 : `🎵 **Song Added!**\n\n> 🛑 **Queue is empty!**\n\n🎧 Add more tracks to keep the party alive!`,
             fields: [
@@ -110,6 +110,18 @@ module.exports = {
                     .setStyle(ButtonStyle.Secondary),
             );
 
-        await interaction.editReply({ embeds: [embed], components: [row1, row2] });
+        const row3 = new ActionRowBuilder()
+            .addComponents(
+                new ButtonBuilder()
+                    .setCustomId('volume_up')
+                    .setLabel("🔊 Volume Up")
+                    .setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder()
+                    .setCustomId('volume_down')
+                    .setLabel('🔉 Volume Down')
+                    .setStyle(ButtonStyle.Secondary)
+            )
+
+        await interaction.editReply({ embeds: [embed], components: [row1, row2, row3] });
     }
 };
