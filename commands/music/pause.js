@@ -1,12 +1,14 @@
 const { SlashCommandBuilder } = require("discord.js");
-const joinVoiceChannelEmbed = require("../../utils/embeds/joinVoiceChannel");
-const botNotConnectedEmbed = require("../../utils/embeds/botNotconnected");
-const sameVoiceChannelEmbed = require("../../utils/embeds/sameVoiceChannel");
-const noSongPlayingEmbed = require("../../utils/embeds/noSongPlaying");
-const pausedPlayingEmbed = require("../../utils/embeds/pause/pausedPlaying");
-const pauseErrorEmbed = require("../../utils/embeds/pause/pauseError");
-const alreadyPausedEmbed = require("../../utils/embeds/pause/alreadyPaused");
-const processingErrorEmbed = require("../../utils/embeds/processingError");
+const {
+    joinVoiceChannelEmbed,
+    botNotConnectedEmbed,
+    sameVoiceChannelEmbed,
+    noSongPlayingEmbed,
+    pausedPlayingEmbed,
+    pauseErrorEmbed,
+    alreadyPausedEmbed,
+    processingErrorEmbed
+} = require("../../utils/embeds/index")
 
 async function pauseTrack({ client, interaction }) {
     try {
