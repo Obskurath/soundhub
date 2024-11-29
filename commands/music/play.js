@@ -3,8 +3,12 @@ const {
     EmbedBuilder,
     ActionRowBuilder,
     ButtonBuilder,
-    ButtonStyle
+    ButtonStyle,
+    AttachmentBuilder
 } = require('discord.js');
+
+const { createNowPlayingImage, getAverageColor } = require("../../utils/canvasHelper");
+const { loadImage } = require('canvas'); 
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -57,26 +61,25 @@ module.exports = {
             return interaction.reply("No track is currently playing.");
         }
 
-        // const thumbnailUrl = track.info.artworkUrl || 'https://example.com/thumbnail.jpg';
+        // Create canvas image
+        const buffer = await createNowPlayingImage(currentTrack);
 
-        const embed = {
-            color: "12745742",
-            description: currentTrack
-                ? `🎵 **Now Playing:** \`${currentTrack.info.title} - ${currentTrack.info.author || "Unknown Author"}\`\n\n> **🎶 Song Added:** \`${track.info.title} - ${track.info.author}\`\n\n✨ Enjoy the groove!`
-                : `🎵 **Song Added!**\n\n> 🛑 **Queue is empty!**\n\n🎧 Add more tracks to keep the party alive!`,
-            fields: [
-                {
-                    name: "🎼 Queue Status",
-                    value: player.queue.tracks.length > 0
-                        ? `🎶 **Next Up:** \`${player.queue.tracks[0]?.info.title || "Unknown Title"} - ${player.queue.tracks[0]?.info.author}\``
-                        : "🛑 **No more tracks queued.**",
-                },
-            ],
-            thumbnail: {
-                url: currentTrack?.info.artworkUrl || "https://example.com/default-thumbnail.png",
-            },
-        };
-        await interaction.followUp({ embeds: [embed] });
+        // Create attachment
+        const attachment = new AttachmentBuilder(buffer, { name: 'now-playing.png' });
+
+        // Embed Color
+        const thumbnailUrl = currentTrack.info.artworkUrl || 'https://example.com/default-thumbnail.png';
+        const thumbnail = await loadImage(thumbnailUrl);
+        const glowColor = await getAverageColor(thumbnail);
+        const hexColor = rgbToHex(glowColor);
+
+        const embed = new EmbedBuilder()
+            .setColor(hexColor) // Use the converted hex color for the embed
+            .setDescription(`🔊 Now Playing [**${currentTrack.info.title} - ${currentTrack.info.author}**](${currentTrack.info.uri})`)
+            .setImage('attachment://now-playing.png')
+            .setFooter({ text: `Requested by ${interaction.member.displayName}` });
+
+        await interaction.editReply({ embeds: [embed], files: [attachment] });
 
         const row1 = new ActionRowBuilder()
             .addComponents(
@@ -118,10 +121,11 @@ module.exports = {
                     .setStyle(ButtonStyle.Secondary),
             );
 
-        
-                
-
-
-        await interaction.editReply({ embeds: [embed], components: [row1, row2,] });
+        await interaction.editReply({ embeds: [embed], components: [row1, row2] });
     }
 };
+
+function rgbToHex(rgb) {
+    const [r, g, b] = rgb.match(/\d+/g).map(Number);
+    return (r << 16) + (g << 8) + b;
+}

@@ -161,13 +161,13 @@ class Bot {
                 if (player) {
                     let currentVolume = player.volume;
                     if (currentVolume < 100) {
-                        player.setVolume(currentVolume + 10)
-                        await interaction.reply(`Volume increased to ${currentVolume + 10}%`);
+                        player.setVolume(currentVolume + 10);
+                        await interaction.reply({ content: `Volume increased to ${currentVolume + 10}%`, ephemeral: true });
                     } else {
-                        await interaction.reply("Volume is already at maximum!");
+                        await interaction.reply({ content: "Volume is already at maximum!", ephemeral: true });
                     }
                 } else {
-                    await interaction.reply("No player found!");
+                    await interaction.reply({ content: "No player found!", ephemeral: true });
                 }
                 break;
             case 'volume_down':
@@ -175,20 +175,20 @@ class Bot {
                     let currentVolume = player.volume;
                     if (currentVolume > 0) {
                         player.setVolume(currentVolume - 10);
-                        await interaction.reply(`Volume decreased to ${currentVolume - 10}%`);
+                        await interaction.reply({ content: `Volume decreased to ${currentVolume - 10}%, ephemeral: true` });
                     } else {
-                        await interaction.reply("Volume is already at minimum!");
+                        await interaction.reply({ content: "Volume is already at minimum!", ephemeral: true });
                     }
                 } else {
-                    await interaction.reply("No player found!");
+                    await interaction.reply({ content: "No player found!", ephemeral: true });
                 }
                 break;
             case 'clear_queue':
                 if (player) {
                     player.queue.tracks = [];
-                    await interaction.reply("The queue has been cleared!");
+                    await interaction.reply({ content: "The queue has been cleared!", ephemeral: true });
                 } else {
-                    await interaction.reply("No player found!");
+                    await interaction.reply({ content: "No player found!", ephemeral: true });
                 }
                 break;
             case 'shuffle_queue':
@@ -201,12 +201,12 @@ class Bot {
                             const j = Math.floor(Math.random() * (i + 1));
                             [tracks[i], tracks[j]] = [tracks[j], tracks[i]]; // Swap tracks
                         }
-                        await interaction.reply("The queue has been shuffled!");
+                        await interaction.reply({ content: "The queue has been shuffled!", ephemeral: true });
                     } else {
-                        await interaction.reply("There are no tracks in the queue to shuffle.");
+                        await interaction.reply({ content: "There are no tracks in the queue to shuffle.", ephemeral: true });
                     }
                 } else {
-                    await interaction.reply("No player found!");
+                    await interaction.reply({ content: "No player found!", ephemeral: true });
                 }
                 break;
             default:
