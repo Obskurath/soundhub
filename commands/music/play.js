@@ -75,7 +75,7 @@ module.exports = {
 
         const embed = new EmbedBuilder()
             .setColor(hexColor) // Use the converted hex color for the embed
-            .setDescription(`🔊 Now Playing [**${currentTrack.info.title} - ${currentTrack.info.author}**](${currentTrack.info.uri})`)
+            .setDescription(`🔊 Now Playing **${currentTrack.info.title} - ${currentTrack.info.author}**`)
             .setImage('attachment://now-playing.png')
             .setFooter({ text: `Requested by ${interaction.member.displayName}` });
 
