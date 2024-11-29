@@ -1,45 +1,61 @@
 const { SlashCommandBuilder } = require("discord.js");
+const joinVoiceChannelEmbed = require("../../utils/embeds/joinVoiceChannel");
+const botNotConnectedEmbed = require("../../utils/embeds/botNotconnected");
+const sameVoiceChannelEmbed = require("../../utils/embeds/sameVoiceChannel");
+const noSongPlayingEmbed = require("../../utils/embeds/noSongPlaying");
+const pausedPlayingEmbed = require("../../utils/embeds/pause/pausedPlaying");
+const pauseErrorEmbed = require("../../utils/embeds/pause/pauseError");
+const alreadyPausedEmbed = require("../../utils/embeds/pause/alreadyPaused");
+const processingErrorEmbed = require("../../utils/embeds/processingError");
 
 async function pauseTrack({ client, interaction }) {
     try {
         if (!interaction.guildId) return;
 
-        await interaction.deferReply();
+        await interaction.deferReply({ephemeral:true});
 
         const voiceChannel = interaction.member.voice.channelId;
 
         if (!voiceChannel) {
-            return interaction.editReply("Please join the voice channel before using the command.");
+            const embed = joinVoiceChannelEmbed()
+            return interaction.editReply({embeds: [embed]});
         }
 
         const player = client.lavalink.getPlayer(interaction.guildId);
 
         if (!player) {
-            return interaction.editReply("Unfortunately, the bot is not connected to the voice channel you are on.");
+            const embed = botNotConnectedEmbed()
+            return interaction.editReply({embeds:[embed]});
         }
 
         if (player.voiceChannelId !== voiceChannel) {
-            return interaction.editReply("You must be in the same voice channel as the bot.");
+            const embed = sameVoiceChannelEmbed()
+            return interaction.editReply({embeds:[embed]});
         }
 
         if (!player.queue.current) {
-            return interaction.editReply("There is no song currently playing.");
+            const embed = noSongPlayingEmbed()
+            return interaction.editReply({embeds:[embed]});
         }
 
         if (!player.paused) {
             try {
                 await player.pause();
-                await interaction.editReply("Paused playing!");
+                const embed = pausedPlayingEmbed()
+                await interaction.editReply({embeds:[embed]});
             } catch (error) {
                 console.error(error);
-                await interaction.editReply("An error occurred while pausing the player.");
+                const embed = pauseErrorEmbed()
+                await interaction.editReply({embeds:[embed]});
             }
         } else {
-            await interaction.editReply("The player is already paused!");
+            const embed = alreadyPausedEmbed()
+            await interaction.editReply({embeds:[embed]});
         }
     } catch (error) {
         console.error(error);
-        return interaction.editReply("An error occurred while processing the command.");
+        const embed = processingErrorEmbed()
+        return interaction.editReply({embeds:[embed]});
     }
 }
 
