@@ -1,9 +1,14 @@
 const { createCanvas, loadImage, registerFont } = require('canvas');
+const fs = require('fs')
+const fontPath = './assets/fonts/JetBrainsMono-Regular.ttf';
 
 // Register fonts
-registerFont('./assets/fonts/JetBrainsMono-Regular.ttf', { family: 'JetBrainsMono' });
-registerFont('./assets/fonts/JetBrainsMono-Italic.ttf', { family: 'JetBrainsMono', style: 'italic' });
-registerFont('./assets/fonts/JetBrainsMono-Bold.ttf', { family: 'JetBrainsMono', weight: 'bold' });
+if (fs.existsSync(fontPath)) {
+    registerFont(fontPath, { family: 'JetBrains Mono' });
+} else {
+    console.error('The font does not exists on the specified path.');
+}
+
 
 // Function to get the average color of an image
 async function getAverageColor(image) {
@@ -58,10 +63,10 @@ async function createNowPlayingImage(currentTrack) {
 
     // Draw song title and author
     ctx.fillStyle = 'white';
-    ctx.font = '30px JetBrainsMono';
+    ctx.font = '30px "JetBrains Mono"';
     ctx.fillText(currentTrack.info.title, 290, 100);
     ctx.fillStyle = 'gray';
-    ctx.font = '22px JetBrainsMono';
+    ctx.font = '22px "JetBrains Mono"';
     ctx.fillText(currentTrack.info.author || 'Unknown Author', 290, 140);
 
     return canvas.toBuffer();
