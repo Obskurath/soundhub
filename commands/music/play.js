@@ -7,8 +7,13 @@ const {
     AttachmentBuilder
 } = require('discord.js');
 
+// Canvas
 const { createNowPlayingImage, getAverageColor } = require("../../utils/canvasHelper");
 const { loadImage } = require('canvas'); 
+
+// Embeds
+const { noSongPlayingEmbed, joinVoiceChannelEmbed  }= require('../../utils/embeds/index');
+const { noTracksFoundEmbed } = require('../../utils/embeds/play');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -23,13 +28,12 @@ module.exports = {
     async execute({ client, interaction }) {
         if (!interaction.guildId) return;
 
-        await interaction.deferReply();
-
         const query = interaction.options.getString("query");
         const voiceChannel = interaction.member?.voice.channel;
 
         if (!voiceChannel) {
-            return interaction.editReply("You need to be in a voice channel to play music!");
+            const embed = joinVoiceChannelEmbed();
+            return interaction.reply({ embeds: [embed], ephemeral: true });
         }
 
         const player = client.lavalink.getPlayer(interaction.guild.id) || await client.lavalink.createPlayer({
@@ -46,7 +50,8 @@ module.exports = {
         const response = await player.search({ query, source: "ytmsearch" }, interaction.user);
 
         if (!response || !response.tracks.length) {
-            return interaction.editReply(`No tracks found for: ${query}`);
+            const embed = noTracksFoundEmbed(query);
+            return interaction.reply({ embeds: [embed], ephemeral: true });
         }
 
         const track = response.tracks[0];
@@ -58,8 +63,11 @@ module.exports = {
 
         const currentTrack = player.queue.current;
         if (!currentTrack) {
-            return interaction.reply("No track is currently playing.");
+            const embed = noSongPlayingEmbed();
+            return interaction.reply({ embeds: [embed], ephemeral: true });
         }
+
+        await interaction.deferReply();
 
         // Create canvas image
         const buffer = await createNowPlayingImage(currentTrack);
@@ -78,8 +86,6 @@ module.exports = {
             .setDescription(`🔊 Now Playing **${currentTrack.info.title} - ${currentTrack.info.author}**`)
             .setImage('attachment://now-playing.png')
             .setFooter({ text: `Requested by ${interaction.member.displayName}` });
-
-        await interaction.editReply({ embeds: [embed], files: [attachment] });
 
         const row1 = new ActionRowBuilder()
             .addComponents(
@@ -121,7 +127,8 @@ module.exports = {
                     .setStyle(ButtonStyle.Secondary),
             );
 
-        await interaction.editReply({ embeds: [embed], components: [row1, row2] });
+        // Send the main embed without ephemeral
+        await interaction.editReply({ embeds: [embed], files: [attachment], components: [row1, row2] });
     }
 };
 
