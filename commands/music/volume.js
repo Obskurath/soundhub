@@ -20,7 +20,7 @@ module.exports = {
             if (!interaction.guildId) return;
 
             // Defer the reply to allow time for processing the command
-            await interaction.deferReply();
+            await interaction.deferReply({ephemeral: true});
 
             // Get the voice channel the user is in
             const voiceChannel = interaction.member.voice.channelId;
