@@ -5,7 +5,7 @@ const customEmoji = config.emojis.error;
 function processingErrorEmbed() {
     return new EmbedBuilder()
         .setColor(0xff0000)
-        .setDescription(`${customEmoji} An error occurred while processing the command.`)
+        .setDescription(`${customEmoji}・An error occurred while processing the command.`)
 }
 
 module.exports = processingErrorEmbed;

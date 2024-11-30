@@ -13,7 +13,7 @@ const { loadImage } = require('canvas');
 
 // Embeds
 const { noSongPlayingEmbed, joinVoiceChannelEmbed  }= require('../../utils/embeds/index');
-const { noTracksFoundEmbed } = require('../../utils/embeds/play');
+const { noTracksFoundEmbed, addedToQueueEmbed } = require('../../utils/embeds/play');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -81,13 +81,21 @@ module.exports = {
         const glowColor = await getAverageColor(thumbnail);
         const hexColor = rgbToHex(glowColor);
 
-        const embed = new EmbedBuilder()
-            .setColor(hexColor) // Use the converted hex color for the embed
-            .setDescription(`🔊 Now Playing **${currentTrack.info.title} - ${currentTrack.info.author}**`)
-            .setImage('attachment://now-playing.png')
-            .setFooter({ text: `Requested by ${interaction.member.displayName}` });
+        const queue = player.queue.tracks;
 
-        const row1 = new ActionRowBuilder()
+        let embed;
+
+        if (queue.length > 0) {
+            embed = addedToQueueEmbed(track, queue.length);
+            await interaction.editReply({ embeds: [embed] });
+        } else {
+            embed = new EmbedBuilder()
+                .setColor(hexColor) // Use the converted hex color for the embed
+                .setDescription(`🔊 Now Playing **${currentTrack.info.title} - ${currentTrack.info.author}**`)
+                .setImage('attachment://now-playing.png')
+                .setFooter({ text: `Requested by ${interaction.member.displayName}` });
+
+            const row1 = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
                     .setCustomId('resume')
@@ -106,12 +114,14 @@ module.exports = {
                     .setEmoji('⏹️')
                     .setStyle(ButtonStyle.Secondary),
                 new ButtonBuilder()
-                    .setLabel('Listen here')
+                    .setLabel('Listen Here')
                     .setStyle(ButtonStyle.Link)
                     .setURL(track.info.uri)
+
+
             );
 
-        const row2 = new ActionRowBuilder()
+            const row2 = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
                     .setCustomId('queue')
@@ -129,6 +139,8 @@ module.exports = {
 
         // Send the main embed without ephemeral
         await interaction.editReply({ embeds: [embed], files: [attachment], components: [row1, row2] });
+        }
+        
     }
 };
 

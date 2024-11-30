@@ -5,7 +5,7 @@ const customEmoji = config.emojis.warning;
 function sameVoiceChannelEmbed() {
     return new EmbedBuilder()
         .setColor(0xffa500)
-        .setDescription(`${customEmoji} You must be in the same voice channel as the bot.`)
+        .setDescription(`${customEmoji}・You must be in the same voice channel as the bot.`)
 }
 
 module.exports = sameVoiceChannelEmbed;

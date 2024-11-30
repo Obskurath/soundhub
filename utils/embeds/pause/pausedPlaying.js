@@ -5,7 +5,7 @@ const customEmoji = config.emojis.check;
 function pausedPlayingEmbed() {
     return new EmbedBuilder()
         .setColor(0x00ff00)
-        .setDescription(`${customEmoji} Paused playing!`)
+        .setDescription(`${customEmoji}・Paused playing!`)
 }
 
 module.exports = pausedPlayingEmbed;
