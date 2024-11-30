@@ -12,8 +12,7 @@ const { createNowPlayingImage, getAverageColor } = require("../../utils/canvasHe
 const { loadImage } = require('canvas'); 
 
 // Embeds
-const { noSongPlayingEmbed, joinVoiceChannelEmbed  }= require('../../utils/embeds/index');
-const { noTracksFoundEmbed, addedToQueueEmbed } = require('../../utils/embeds/play');
+const { noSongPlayingEmbed, joinVoiceChannelEmbed, noTracksFoundEmbed, addedToQueueEmbed, createNowPlayingEmbed }= require('../../utils/embeds/index');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -89,56 +88,8 @@ module.exports = {
             embed = addedToQueueEmbed(track, queue.length);
             await interaction.editReply({ embeds: [embed] });
         } else {
-            embed = new EmbedBuilder()
-                .setColor(hexColor) // Use the converted hex color for the embed
-                .setDescription(`🔊 Now Playing **${currentTrack.info.title} - ${currentTrack.info.author}**`)
-                .setImage('attachment://now-playing.png')
-                .setFooter({ text: `Requested by ${interaction.member.displayName}` });
-
-            const row1 = new ActionRowBuilder()
-            .addComponents(
-                new ButtonBuilder()
-                    .setCustomId('resume')
-                    .setEmoji('▶️')
-                    .setStyle(ButtonStyle.Secondary),
-                new ButtonBuilder()
-                    .setCustomId('pause')
-                    .setEmoji('⏸️')
-                    .setStyle(ButtonStyle.Secondary),
-                new ButtonBuilder()
-                    .setCustomId('skip')
-                    .setEmoji('⏭️')
-                    .setStyle(ButtonStyle.Secondary),
-                new ButtonBuilder()
-                    .setCustomId('stop')
-                    .setEmoji('⏹️')
-                    .setStyle(ButtonStyle.Secondary),
-                new ButtonBuilder()
-                    .setLabel('Listen Here')
-                    .setStyle(ButtonStyle.Link)
-                    .setURL(track.info.uri)
-
-
-            );
-
-            const row2 = new ActionRowBuilder()
-            .addComponents(
-                new ButtonBuilder()
-                    .setCustomId('queue')
-                    .setLabel('View Queue')
-                    .setStyle(ButtonStyle.Secondary),
-                new ButtonBuilder()
-                    .setCustomId('volume_down')
-                    .setLabel('🔉 Volume Down')
-                    .setStyle(ButtonStyle.Secondary),
-                new ButtonBuilder()
-                    .setCustomId('volume_up')
-                    .setLabel("🔊 Volume Up")
-                    .setStyle(ButtonStyle.Secondary),
-            );
-
-        // Send the main embed without ephemeral
-        await interaction.editReply({ embeds: [embed], files: [attachment], components: [row1, row2] });
+            const { embed, components, files } = await createNowPlayingEmbed(currentTrack, interaction, hexColor, attachment);
+    await interaction.editReply({ embeds: [embed], components, files });
         }
         
     }
