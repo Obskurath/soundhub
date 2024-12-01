@@ -56,6 +56,9 @@ class Bot {
                 id: botConfig.clientId,
                 username: "Soundhub",
             },
+            options: {
+                requestTimeout: 10000 // Increase timeout to 10 seconds
+            }
         });
 
         // Initialize commands collection
