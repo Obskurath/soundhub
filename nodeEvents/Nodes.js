@@ -3,17 +3,17 @@ function NodesEvents(client) {
     // Listen to the 'connect' event when a node connects to Lavalink
     client.lavalink.nodeManager.on('connect', (node) => {
         // Log a message when a node is successfully connected
-        console.log(`[NODES] -> connected`);
+        console.log(`[NODES] -> Connected`);
     })
     // Listen to the 'disconnect' event when a node disconnects from Lavalink
     .on('disconnect', (node) => {
         // Log a message when a node is disconnected
-        console.log(`[NODES] -> disconnect`);
+        console.log(`[NODES] -> Disconnect`);
     })
     // Listen to the 'reconnecting' event when a node is attempting to reconnect
     .on('reconnecting', (node) => {
         // Log a message when a node is attempting to reconnect
-        console.log(`[NODES] -> reconnecting`);
+        console.log(`[NODES] -> Reconnecting`);
     })
 }
 
