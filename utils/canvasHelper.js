@@ -17,25 +17,25 @@ async function getAverageColor(image) {
     const canvas = createCanvas(image.width, image.height);
     const ctx = canvas.getContext('2d');
     ctx.drawImage(image, 0, 0);
-    
+
     // Get pixel data
     const pixels = ctx.getImageData(0, 0, image.width, image.height);
     const data = pixels.data;
-    
+
     let r = 0, g = 0, b = 0;
     const totalPixels = data.length / 4;
-    
+
     // Calculate average color
     for (let i = 0; i < data.length; i += 4) {
         r += data[i];     // Red
         g += data[i + 1]; // Green
         b += data[i + 2]; // Blue
     }
-    
+
     r = Math.floor(r / totalPixels);
     g = Math.floor(g / totalPixels);
     b = Math.floor(b / totalPixels);
-    
+
     return `rgb(${r}, ${g}, ${b})`;
 }
 
@@ -57,7 +57,9 @@ async function createNowPlayingImage(currentTrack) {
     // Load and draw thumbnail
     const thumbnailUrl = currentTrack.info.artworkUrl || 'https://example.com/default-thumbnail.png';
     const thumbnail = await loadImage(thumbnailUrl);
-    ctx.drawImage(thumbnail, 20, 20, 180, 180);
+    const thumbnailX = 20;
+    const thumbnailY = 20;
+    const thumbnailSize = 180;
 
     // Get the average color of the thumbnail
     const glowColor = await getAverageColor(thumbnail);
@@ -66,9 +68,13 @@ async function createNowPlayingImage(currentTrack) {
     ctx.save(); // Save the current state of the canvas
     ctx.shadowBlur = 20; // Adjust this value for more/less blur
     ctx.shadowColor = glowColor; // Color of the glow
-    ctx.drawImage(thumbnail, 20, 20, 210, 210);
+    ctx.drawImage(thumbnail, thumbnailX, thumbnailY, thumbnailSize + 30, thumbnailSize + 30); // Slightly larger for the glow effect
     ctx.restore(); // Restore the previous state to prevent the shadow from affecting other drawings
 
+    // Add a small border around the thumbnail
+    ctx.strokeStyle = glowColor; // Border color
+    ctx.lineWidth = 5; // Border width
+    ctx.strokeRect(thumbnailX - 5, thumbnailY - 5, thumbnailSize + 30 + 10, thumbnailSize + 30 + 10) // Add border
 
     // Draw song title and author
     ctx.fillStyle = 'white';
