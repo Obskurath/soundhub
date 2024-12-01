@@ -1,10 +1,8 @@
 const {
-    SlashCommandBuilder,
     EmbedBuilder,
     ActionRowBuilder,
     ButtonBuilder,
     ButtonStyle,
-    AttachmentBuilder
 } = require('discord.js');
 
 
