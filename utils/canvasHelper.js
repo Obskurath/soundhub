@@ -9,6 +9,8 @@ if (fs.existsSync(fontPath)) {
     console.error('The font does not exists on the specified path.');
 }
 
+// Cache to store images based on track info
+const cache = {};
 
 // Function to get the average color of an image
 async function getAverageColor(image) {
@@ -38,6 +40,13 @@ async function getAverageColor(image) {
 }
 
 async function createNowPlayingImage(currentTrack) {
+    // Check if the image is already cached
+    const trackId = currentTrack.info.title + currentTrack.info.author; // Unique key based based on track title and author
+    if (cache[trackId]) {
+        // console.log("Retuning cache image for track:", currentTrack.info.title);
+        return cache[trackId]; // Return cached image
+    }
+
     const canvas = createCanvas(900, 250);
     const ctx = canvas.getContext('2d');
 
@@ -69,7 +78,10 @@ async function createNowPlayingImage(currentTrack) {
     ctx.font = '22px "JetBrains Mono"';
     ctx.fillText(currentTrack.info.author || 'Unknown Author', 290, 140);
 
-    return canvas.toBuffer();
+    const imageBuffer = canvas.toBuffer();
+    cache[trackId] = imageBuffer;
+
+    return imageBuffer;
 }
 
 module.exports = { createNowPlayingImage, getAverageColor };
