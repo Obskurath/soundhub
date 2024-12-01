@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 
 function MusicTime(duration) {
     let minutes = Math.floor(duration / 60000);
@@ -75,8 +75,20 @@ module.exports = {
             // Seek to the specified time (convert seconds to milliseconds)
             await player.seek(totalSeconds * 1000);
 
-            // Respond to the user with the updated time position
-            await interaction.editReply(`Successfully skipped to: ${MusicTime(player.position)}!`);
+            // Create an Embed with the time information
+            const embed = new EmbedBuilder()
+                .setColor("#FFC0CB")
+                .setTitle("Song Position Skipped")
+                .setDescription(`Successfully skipped to **${MusicTime(player.position)}**!`)
+                .addFields(
+                    { name: "Requested by", value: `${interaction.user.username}`, inline: true },
+                    { name: "Seek Time", value: `${timeString}`, inline: true }
+                )
+                .setFooter({ text: `Requested by ${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL() })
+                .setTimestamp();
+
+            // Send the Embed as a reply
+            await interaction.editReply({ embeds: [embed] });
         } catch (error) {
             // Log any errors that occur during the command execution
             console.error(error);

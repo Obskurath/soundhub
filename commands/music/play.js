@@ -5,10 +5,16 @@ const {
 
 // Canvas
 const { createNowPlayingImage, getAverageColor } = require("../../utils/canvasHelper");
-const { loadImage } = require('canvas'); 
+const { loadImage } = require('canvas');
 
 // Embeds
-const { noSongPlayingEmbed, joinVoiceChannelEmbed, noTracksFoundEmbed, addedToQueueEmbed, createNowPlayingEmbed }= require('../../utils/embeds/index');
+const {
+    noSongPlayingEmbed,
+    joinVoiceChannelEmbed,
+    noTracksFoundEmbed,
+    addedToQueueEmbed,
+    createNowPlayingEmbed
+} = require('../../utils/embeds/index');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -84,10 +90,10 @@ module.exports = {
             embed = addedToQueueEmbed(track, queue.length);
             await interaction.editReply({ embeds: [embed] });
         } else {
-            const { embed, components, files } = await createNowPlayingEmbed(currentTrack, interaction, hexColor, attachment);
-    await interaction.editReply({ embeds: [embed], components, files });
+            const { embed, components, files } = createNowPlayingEmbed(currentTrack, interaction, hexColor, attachment);
+            await interaction.editReply({ embeds: [embed], components, files });
         }
-        
+
     }
 };
 

@@ -43,6 +43,7 @@ class Bot {
                 GatewayIntentBits.GuildMessages,
                 GatewayIntentBits.GuildVoiceStates,
                 // GatewayIntentBits.MessageContent,
+                GatewayIntentBits.GuildEmojisAndStickers
             ]
         });
 
