@@ -176,7 +176,7 @@ class Bot {
                     let currentVolume = player.volume;
                     if (currentVolume > 0) {
                         player.setVolume(currentVolume - 10);
-                        await interaction.reply({ content: `Volume decreased to ${currentVolume - 10}%, ephemeral: true` });
+                        await interaction.reply({ content: `Volume decreased to ${currentVolume - 10}%`, ephemeral: true });
                     } else {
                         await interaction.reply({ content: "Volume is already at minimum!", ephemeral: true });
                     }
