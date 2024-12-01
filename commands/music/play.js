@@ -8,7 +8,13 @@ const { createNowPlayingImage, getAverageColor } = require("../../utils/canvasHe
 const { loadImage } = require('canvas');
 
 // Embeds
-const { noSongPlayingEmbed, joinVoiceChannelEmbed, noTracksFoundEmbed, addedToQueueEmbed, createNowPlayingEmbed } = require('../../utils/embeds/index');
+const {
+    noSongPlayingEmbed,
+    joinVoiceChannelEmbed,
+    noTracksFoundEmbed,
+    addedToQueueEmbed,
+    createNowPlayingEmbed
+} = require('../../utils/embeds/index');
 
 module.exports = {
     data: new SlashCommandBuilder()
