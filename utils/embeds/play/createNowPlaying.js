@@ -5,14 +5,15 @@ const {
     ButtonStyle,
 } = require('discord.js');
 
-
-function createNowPlayingEmbed(currentTrack, interaction, hexColor, attachment) {
-    const embed = new EmbedBuilder()
+function createNowPlayingEmbed(currentTrack, player, hexColor, attachment) {
+    return new EmbedBuilder()
         .setColor(hexColor) // Use the converted hex color for the embed
         .setDescription(`🔊 Now Playing **${currentTrack.info.title} - ${currentTrack.info.author}**`)
         .setImage('attachment://now-playing.png')
-        .setFooter({ text: `Requested by ${interaction.member.displayName}` });
+        .setFooter({ text: `Requested by ${player.queue.current.requester.displayName}` });
+}
 
+function createNowPlayingComponents(currentTrack) {
     const row1 = new ActionRowBuilder()
         .addComponents(
             new ButtonBuilder()
@@ -53,7 +54,14 @@ function createNowPlayingEmbed(currentTrack, interaction, hexColor, attachment) 
                 .setStyle(ButtonStyle.Secondary),
         );
 
-    return { embed, components: [row1, row2], files: [attachment] };
+    return [row1, row2];
 }
 
-module.exports = createNowPlayingEmbed
+function createNowPlaying(currentTrack, player, hexColor, attachment) {
+    const embed = createNowPlayingEmbed(currentTrack, player, hexColor, attachment);
+    const components = createNowPlayingComponents(currentTrack);
+
+    return { embed, components, files: [attachment] };
+}
+
+module.exports = { createNowPlaying };

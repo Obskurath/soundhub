@@ -3,18 +3,15 @@ const {
     AttachmentBuilder
 } = require('discord.js');
 
-// Canvas
-const { createNowPlayingImage, getAverageColor } = require("../../utils/canvasHelper");
-const { loadImage } = require('canvas');
-
 // Embeds
 const {
     noSongPlayingEmbed,
     joinVoiceChannelEmbed,
     noTracksFoundEmbed,
     addedToQueueEmbed,
-    createNowPlayingEmbed
+    startedPlayingEmbed
 } = require('../../utils/embeds/index');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -68,36 +65,16 @@ module.exports = {
             return interaction.reply({ embeds: [embed], ephemeral: true });
         }
 
-        await interaction.deferReply();
-
-        // Create canvas image
-        const buffer = await createNowPlayingImage(currentTrack);
-
-        // Create attachment
-        const attachment = new AttachmentBuilder(buffer, { name: 'now-playing.png' });
-
-        // Embed Color
-        const thumbnailUrl = currentTrack.info.artworkUrl || 'https://example.com/default-thumbnail.png';
-        const thumbnail = await loadImage(thumbnailUrl);
-        const glowColor = await getAverageColor(thumbnail);
-        const hexColor = rgbToHex(glowColor);
-
         const queue = player.queue.tracks;
 
-        let embed;
-
         if (queue.length > 0) {
-            embed = addedToQueueEmbed(track, queue.length);
-            await interaction.editReply({ embeds: [embed] });
+            const embed = addedToQueueEmbed(track, queue.length);
+            await interaction.reply({ embeds: [embed]});
         } else {
-            const { embed, components, files } = createNowPlayingEmbed(currentTrack, interaction, hexColor, attachment);
-            await interaction.editReply({ embeds: [embed], components, files });
+            await interaction.deferReply();
+            const embed = startedPlayingEmbed(track)
+            await interaction.editReply({embeds: [embed]});
         }
 
     }
 };
-
-function rgbToHex(rgb) {
-    const [r, g, b] = rgb.match(/\d+/g).map(Number);
-    return (r << 16) + (g << 8) + b;
-}

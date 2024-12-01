@@ -1,36 +1,54 @@
-// Function to handle Lavalink player events
+const { createNowPlaying } = require('../utils/embeds/play/createNowPlaying');
+const { createNowPlayingImage, getAverageColor } = require('../utils/canvasHelper');
+const { AttachmentBuilder } = require('discord.js');
+const { loadImage } = require('canvas');
+
+function rgbToHex(rgb) {
+    const [r, g, b] = rgb.match(/\d+/g).map(Number);
+    return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()}`;
+}
+
 function PlayerEvents(client) {
-    // Listen to the 'trackStart' event when a track starts playing
-    client.lavalink.on('trackStart', (player, track) => {
-        // Log the track title when it starts playing
+    client.lavalink.on('trackStart', async (player, track) => {
         console.log(`[Track Start] -> ${track?.info?.title} -> Guilds ${player.guildId} -> Volume ${player.volume}%`);
+
+        const currentTrack = player.queue.current;
+        if (!currentTrack) return;
+
+        // Create canvas image
+        const buffer = await createNowPlayingImage(currentTrack);
+
+        // Create attachment
+        const attachment = new AttachmentBuilder(buffer, { name: 'now-playing.png' });
+
+        // Embed Color
+        const thumbnailUrl = currentTrack.info.artworkUrl || 'https://example.com/default-thumbnail.png';
+        const thumbnail = await loadImage(thumbnailUrl);
+        const glowColor = await getAverageColor(thumbnail);
+        const hexColor = rgbToHex(glowColor);
+
+        const { embed, components } = createNowPlaying(currentTrack, player, hexColor, attachment);
+
+        const channel = client.channels.cache.get(player.textChannelId);
+        if (channel) {
+            await channel.send({ embeds: [embed], components, files: [attachment] });
+        }
     })
-    // Listen to the 'trackEnd' event when a track finishes playing
     .on('trackEnd', (player, track) => {
-        // Log the track title when it ends
         console.log(`[Track End] -> ${track?.info?.title} -> Guilds ${player.guildId}`);
-        // Log the current queue length
         console.log(`Queue length after track end: ${player.queue.length}`);
     })
-    // Listen to the 'trackError' event when an error occurs with the track
     .on('trackError', (player, track) => {
-        // Log the track title when there is an error
         console.log(`[Track Error] -> ${track?.info?.title} -> Guilds ${player.guildId}`);
         console.error(`Error details: ${track?.error}`);
     })
-    // Listen to the 'trackStuck' event when a track is stuck (e.g., if it can't be played properly)
     .on('trackStuck', (player, track) => {
-        // Log the track title when the track gets stuck
         console.log(`[Track Stuck] -> ${track?.info?.title} -> Guilds ${player.guildId}`);
     })
-    // Listen to the 'queueEnd' event when the entire queue finishes
     .on('queueEnd', (player, track) => {
-        // Log the title of the last track when the queue ends
         console.log(`[Queue Ended] -> ${track?.info?.title} -> Guilds ${player.guildId}`);
-        // Log the queue end event
         console.log('Queue has ended.');
     });
 }
 
-// Export the PlayerEvents function to use it elsewhere in the project
 module.exports = PlayerEvents;
