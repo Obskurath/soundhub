@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 
 module.exports = {
     // Create the Slash Command with the name "leave" and description
@@ -38,8 +38,21 @@ module.exports = {
             // Destroy the player (stop the song and disconnect from the voice channel)
             await player.destroy();
 
-            // Reply to the user saying that the bot has left the voice channel
-            await interaction.editReply({ content: "Exited the voice channel. If you want to play the song again, you can order me now." });
+            // Create an Embed to inform the user that the bot is leaving the channel
+            const embed = new EmbedBuilder()
+                .setColor("#FFC0CB") // Set color to red to indicate the action is a stop
+                .setTitle("Goodbye!")
+                .setDescription("The bot has successfully left the voice channel.")
+                .addFields(
+                    { name: "Action", value: "Exited the voice channel and stopped the song.", inline: true },
+                    { name: "Requested by", value: `${interaction.user.username}`, inline: true }
+                )
+                .setFooter({ text: `Requested by ${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL() })
+                .setTimestamp();
+
+            // Reply with the Embed message
+            await interaction.editReply({ embeds: [embed] });
+
         } catch (error) {
             // Log any errors that occur during the command execution
             console.error(error);
