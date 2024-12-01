@@ -59,7 +59,7 @@ async function createNowPlayingImage(currentTrack) {
     const thumbnail = await loadImage(thumbnailUrl);
     const thumbnailX = 20;
     const thumbnailY = 20;
-    const thumbnailSize = 180;
+    const thumbnailSize = 210;
 
     // Get the average color of the thumbnail
     const glowColor = await getAverageColor(thumbnail);
@@ -68,20 +68,17 @@ async function createNowPlayingImage(currentTrack) {
     ctx.save(); // Save the current state of the canvas
     ctx.shadowBlur = 20; // Adjust this value for more/less blur
     ctx.shadowColor = glowColor; // Color of the glow
-    ctx.drawImage(thumbnail, thumbnailX, thumbnailY, thumbnailSize + 30, thumbnailSize + 30); // Slightly larger for the glow effect
+    ctx.shadowOffsetX = 0; // No horizontal offset
+    ctx.shadowOffsetY = 0; // No vertical offset
+    ctx.drawImage(thumbnail, thumbnailX, thumbnailY, thumbnailSize, thumbnailSize); // Draw the thumbnail
     ctx.restore(); // Restore the previous state to prevent the shadow from affecting other drawings
-
-    // Add a small border around the thumbnail
-    ctx.strokeStyle = glowColor; // Border color
-    ctx.lineWidth = 5; // Border width
-    ctx.strokeRect(thumbnailX - 5, thumbnailY - 5, thumbnailSize + 30 + 10, thumbnailSize + 30 + 10) // Add border
 
     // Draw song title and author
     ctx.fillStyle = 'white';
     ctx.font = '30px "JetBrains Mono", sans-serif';
     ctx.fillText(currentTrack.info.title, 290, 100);
     ctx.fillStyle = 'gray';
-    ctx.font = '22px "JetBrains Mono"';
+    ctx.font = '22px "JetBrains Mono", sans-serif';
     ctx.fillText(currentTrack.info.author || 'Unknown Author', 290, 140);
 
     const imageBuffer = canvas.toBuffer();
