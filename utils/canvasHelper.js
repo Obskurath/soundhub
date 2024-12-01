@@ -78,7 +78,7 @@ async function createNowPlayingImage(currentTrack) {
 
     // Draw song title and author
     ctx.fillStyle = 'white';
-    ctx.font = '30px "JetBrains Mono"';
+    ctx.font = '30px "JetBrains Mono", sans-serif';
     ctx.fillText(currentTrack.info.title, 290, 100);
     ctx.fillStyle = 'gray';
     ctx.font = '22px "JetBrains Mono"';

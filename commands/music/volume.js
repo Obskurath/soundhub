@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -20,7 +20,7 @@ module.exports = {
             if (!interaction.guildId) return;
 
             // Defer the reply to allow time for processing the command
-            await interaction.deferReply({ephemeral: true});
+            await interaction.deferReply({ ephemeral: true });
 
             // Get the voice channel the user is in
             const voiceChannel = interaction.member.voice.channelId;
@@ -41,10 +41,19 @@ module.exports = {
             if (!player.queue.current) return interaction.editReply("There are no songs playing right now.");
 
             // Set the volume to the specified level from the user's input
-            await player.setVolume(interaction.options.getInteger("volume"));
+            const volume = interaction.options.getInteger("volume");
+            await player.setVolume(volume);
 
-            // Send a reply confirming the current volume level
-            await interaction.editReply(`Current volume adjusted to: ${player.volume}%`);
+            // Create an Embed with the volume change information
+            const embed = new EmbedBuilder()
+                .setColor("#FFC0CB")
+                .setTitle("Volume Adjusted")
+                .setDescription(`The volume has been adjusted to **${volume}%**.`)
+                .setFooter({ text: `Requested by ${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL() })
+                .setTimestamp();
+
+            // Send the Embed as a reply
+            await interaction.editReply({ embeds: [embed] });
         } catch (error) {
             // Log any errors that occur during the command execution
             console.error(error);
