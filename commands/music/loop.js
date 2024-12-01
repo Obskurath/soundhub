@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 
 module.exports = {
     // Create the Slash Command with the name "loop" and description
@@ -6,7 +6,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("loop")
         .setDescription("Order the bot to repeat the song.")
-        .addStringOption(option => 
+        .addStringOption(option =>
             option.setName("mode")
                 .setDescription("Select loop mode")
                 .addChoices(
@@ -21,7 +21,6 @@ module.exports = {
     async execute({ client, interaction }) {
         try {
             // Check if the interaction is part of a guild (server)
-            // If there is no guildId, return (do not proceed with the command)
             if (!interaction.guildId) return;
 
             // Defer the reply to give time for processing the command
@@ -54,10 +53,23 @@ module.exports = {
             }
 
             // Set the loop mode based on the user's choice (track, queue, or off)
-            await player.setRepeatMode(interaction.options.getString("mode"));
+            const mode = interaction.options.getString("mode");
+            await player.setRepeatMode(mode);
 
-            // Reply to the user indicating the loop mode that has been enabled
-            await interaction.editReply(`**Loop mode is now set to: ${player.repeatMode}**`);
+            // Create an Embed to inform the user of the current loop mode
+            const embed = new EmbedBuilder()
+                .setColor(mode === "off" ? "#FF0000" : "#FFC0CB")  // Red for 'off', Pink for 'track' or 'queue'
+                .setTitle("Loop Mode Updated")
+                .setDescription(`**Loop mode is now set to:** ${mode === 'off' ? 'None (Loop Disabled)' : mode.charAt(0).toUpperCase() + mode.slice(1)}`)
+                .addFields(
+                    { name: "Requested by", value: `${interaction.user.username}`, inline: true },
+                    { name: "Current Loop Mode", value: `${mode === 'off' ? 'None' : mode.charAt(0).toUpperCase() + mode.slice(1)}`, inline: true }
+                )
+                .setFooter({ text: `Requested by ${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL() })
+                .setTimestamp();
+
+            // Send the Embed as a reply
+            await interaction.editReply({ embeds: [embed] });
         } catch (error) {
             // Log any errors that occur during the command execution
             console.error(error);
