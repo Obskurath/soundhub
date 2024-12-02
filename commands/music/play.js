@@ -67,14 +67,18 @@ module.exports = {
 
         const queue = player.queue.tracks;
 
-        if (queue.length > 0) {
-            const embed = addedToQueueEmbed(track, queue.length);
-            await interaction.reply({ embeds: [embed]});
-        } else {
-            await interaction.deferReply();
-            const embed = startedPlayingEmbed(track)
-            await interaction.editReply({embeds: [embed]});
+        try {
+            if (queue.length > 0) {
+                const embed = addedToQueueEmbed(track, queue.length);
+                await interaction.reply({ embeds: [embed] });
+            } else {
+                await interaction.deferReply();
+                const embed = startedPlayingEmbed(track);
+                await interaction.editReply({ embeds: [embed] });
+            }
+        } catch (error) {
+            console.error('Error handling interaction:', error);
+            await interaction.reply({ content: 'An error occurred while processing your request.', ephemeral: true });
         }
-
     }
 };
