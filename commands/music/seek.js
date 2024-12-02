@@ -77,15 +77,10 @@ module.exports = {
 
             // Create an Embed with the time information
             const embed = new EmbedBuilder()
-                .setColor("#FFC0CB")
-                .setTitle("Song Position Skipped")
-                .setDescription(`Successfully skipped to **${MusicTime(player.position)}**!`)
-                .addFields(
-                    { name: "Requested by", value: `${interaction.user.username}`, inline: true },
-                    { name: "Seek Time", value: `${timeString}`, inline: true }
-                )
+                .setColor(0x00ff00)
+                .setTitle("⏩ Song Position Skipped")
+                .setDescription(`Successfully skipped to **${MusicTime(player.position)}**! 🎶`)
                 .setFooter({ text: `Requested by ${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL() })
-                .setTimestamp();
 
             // Send the Embed as a reply
             await interaction.editReply({ embeds: [embed] });
