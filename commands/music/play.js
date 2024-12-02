@@ -1,6 +1,5 @@
 const {
     SlashCommandBuilder,
-    AttachmentBuilder
 } = require('discord.js');
 
 // Embeds
@@ -11,7 +10,6 @@ const {
     addedToQueueEmbed,
     startedPlayingEmbed
 } = require('../../utils/embeds/index');
-const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
