@@ -9,6 +9,8 @@ function rgbToHex(rgb) {
 }
 
 function PlayerEvents(client) {
+    let nowPlayingMessageId = null;
+
     client.lavalink.on('trackStart', async (player, track) => {
         console.log(`[Track Start] -> ${track?.info?.title} -> Guilds ${player.guildId} -> Volume ${player.volume}%`);
 
@@ -31,12 +33,22 @@ function PlayerEvents(client) {
 
         const channel = client.channels.cache.get(player.textChannelId);
         if (channel) {
-            await channel.send({ embeds: [embed], components, files: [attachment] });
+            const message = await channel.send({ embeds: [embed], components, files: [attachment] });
+            nowPlayingMessageId = message.id;
         }
     })
-    .on('trackEnd', (player, track) => {
+    .on('trackEnd', async (player, track) => {
         console.log(`[Track End] -> ${track?.info?.title} -> Guilds ${player.guildId}`);
         console.log(`Queue length after track end: ${player.queue.length}`);
+
+        const channel = client.channels.cache.get(player.textChannelId);
+        if (channel && nowPlayingMessageId) {
+            const message = await channel.messages.fetch(nowPlayingMessageId);
+            if (message) {
+                await message.delete();
+                nowPlayingMessageId = null;
+            }
+        }
     })
     .on('trackError', (player, track) => {
         console.log(`[Track Error] -> ${track?.info?.title} -> Guilds ${player.guildId}`);
@@ -45,9 +57,18 @@ function PlayerEvents(client) {
     .on('trackStuck', (player, track) => {
         console.log(`[Track Stuck] -> ${track?.info?.title} -> Guilds ${player.guildId}`);
     })
-    .on('queueEnd', (player, track) => {
+    .on('queueEnd', async (player, track) => {
         console.log(`[Queue Ended] -> ${track?.info?.title} -> Guilds ${player.guildId}`);
         console.log('Queue has ended.');
+
+        const channel = client.channels.cache.get(player.textChannelId);
+        if (channel && nowPlayingMessageId) {
+            const message = await channel.messages.fetch(nowPlayingMessageId);
+            if (message) {
+                await message.delete();
+                nowPlayingMessageId = null;
+            }
+        }
     });
 }
 
