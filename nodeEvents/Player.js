@@ -29,7 +29,18 @@ function PlayerEvents(client) {
         const glowColor = await getAverageColor(thumbnail);
         const hexColor = rgbToHex(glowColor);
 
+        // Next Emoji
+        const config = require("../config/emojis.json");
+        const nextEmoji = config.emojis.next
+
+        // Get the next track in the queue
+        const nextTrack = player.queue.tracks[0];
+        const nextTrackDescription = nextTrack ? 
+        
+        `\n${nextEmoji}・Next Song **${nextTrack.info.title} - ${nextTrack.info.author}**` : '';
+
         const { embed, components } = createNowPlaying(currentTrack, player, hexColor, attachment);
+        embed.setDescription(`🔊・Now Playing **${currentTrack.info.title} - ${currentTrack.info.author}**${nextTrackDescription}`);
 
         const channel = client.channels.cache.get(player.textChannelId);
         if (channel) {
@@ -57,9 +68,8 @@ function PlayerEvents(client) {
     .on('trackStuck', (player, track) => {
         console.log(`[Track Stuck] -> ${track?.info?.title} -> Guilds ${player.guildId}`);
     })
-    .on('queueEnd', async (player, track) => {
-        console.log(`[Queue Ended] -> ${track?.info?.title} -> Guilds ${player.guildId}`);
-        console.log('Queue has ended.');
+    .on('queueEnd', async (player) => {
+        console.log(`[Queue Ended] -> Guilds ${player.guildId}`);
 
         const channel = client.channels.cache.get(player.textChannelId);
         if (channel && nowPlayingMessageId) {
