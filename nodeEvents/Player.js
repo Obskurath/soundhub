@@ -39,7 +39,7 @@ function PlayerEvents(client) {
     })
     .on('trackEnd', async (player, track) => {
         console.log(`[Track End] -> ${track?.info?.title} -> Guilds ${player.guildId}`);
-        console.log(`Queue length after track end: ${player.queue.length}`);
+        console.log(`Queue length after track end: ${player.queue.tracks.length}`);
 
         const channel = client.channels.cache.get(player.textChannelId);
         if (channel && nowPlayingMessageId) {
