@@ -137,7 +137,7 @@ node index.js
 - lavalink-client v2.4.1
 
 ## 🤝 Contributing
-We welcome contributions! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute.
+We welcome contributions! Please see our [CONTRIBUTING](CONTRIBUTING.md) for guidelines on how to contribute.
 
 ## 📝 License
 This project is open-source and available under the [MIT License](LICENSE).
