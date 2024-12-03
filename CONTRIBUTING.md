@@ -30,10 +30,6 @@ First off, thanks for taking the time to contribute! 🎉
 - Write clear, concise, and meaningful commit messages.
 - Ensure your code passes all tests and lint checks.
 
-### Code of Conduct 📜
-
-By participating in this project, you agree to abide by the [Code of Conduct](CODE_OF_CONDUCT.md).
-
 ## Getting Help ❓
 
 If you have any questions or need further assistance, feel free to open an issue on GitHub.
