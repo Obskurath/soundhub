@@ -1,6 +1,6 @@
 const { createCanvas, loadImage, registerFont } = require('canvas');
 const fs = require('fs')
-const fontPath = './assets/fonts/JetBrainsMono-Regular.ttf';
+const fontPath = '/assets/fonts/JetBrainsMono-Regular.ttf';
 
 // Register fonts
 if (fs.existsSync(fontPath)) {
