@@ -137,11 +137,7 @@ node index.js
 - lavalink-client v2.4.1
 
 ## 🤝 Contributing
-1. Fork repository
-2. Create branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add feature'`)
-4. Push branch (`git push origin feature/amazing-feature`)
-5. Open Pull Request
+We welcome contributions! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute.
 
 ## 📝 License
 This project is open-source and available under the [MIT License](LICENSE).
