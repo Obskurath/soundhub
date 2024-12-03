@@ -41,8 +41,7 @@
 
 ### Prerequisites
 1. Node.js (Required)
-   - Compatible with Node.js v18.x.x and above
-   - Tested on Node.js v23.1.0
+   - Compatible with Node.js v18.19.0
 2. Java JDK 17+ (for Lavalink server)
 3. Discord Bot Token
 4. Lavalink Server v4.0.0+
